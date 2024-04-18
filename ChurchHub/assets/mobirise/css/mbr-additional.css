@@ -126,7 +126,7 @@ body {
 /* Buttons */
 .btn {
   padding: 1.25rem 2rem;
-  border-radius: 4px;
+  border-radius: 10px;
   padding: 0.75rem 1.5rem;
 }
 .btn-sm {
@@ -767,6 +767,7 @@ a {
   .container-fluid {
     padding-left: 16px;
     padding-right: 16px;
+
   }
 }
 .cid-uagGX95X8g {
@@ -2304,6 +2305,7 @@ a {
   padding-top: 10rem;
   padding-bottom: 7rem;
   background-color: #edefeb;
+  height: 70rem;
 }
 .cid-uagZCfXL7S .justify-content-center {
   align-items: center;

@@ -1,0 +1,196 @@
+﻿@model ChurchHub.User_Account
+@{
+    ViewBag.Title = "SignUp";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <br />
+            <br />
+            <br />
+            <br />
+            <hr />
+            <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-5">
+                <strong>Create Account</strong>
+            </h3>
+            <br />
+            @if (User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin"))
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group" hidden>
+                        @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Username
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Password
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "Password", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Confirm Password
+                        <div class="col-md-10">
+                            <input type="password" class="form-control" name="ConfirmPass" value="" required />
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Email
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        User Type
+                        <div class="col-md-10">
+                            @Html.DropDownList("Role", (IEnumerable<SelectListItem>)ViewBag.Role, new { @class = "form-control" })
+
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group" hidden>
+                        @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Username
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Password
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "Password", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Confirm Password
+                        <div class="col-md-10">
+                            <input type="password" class="form-control" name="ConfirmPass" value="" required />
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Email
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    //Gubaon
+                    <div class="form-group">
+                        User Type
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(model => model.Role, "User", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group" hidden>
+                    @Html.LabelFor(model => model.UserId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.UserId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        Username
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Password
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @type = "Password", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Confirm Password
+                        <div class="col-md-10">
+                            <input type="password" class="form-control" name="ConfirmPass" value="" required />
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        Email
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @type = "email", @required = true } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    //Gubaon
+                    <div class="form-group">
+                        User Type
+                        <div class="col-md-10">
+                            @Html.ValidationMessageFor(model => model.Role, "User", new { @class = "text-danger" })
+                           
+
+
+                        </div>
+                    </div>
+            }
+
+            <div class="form-group">
+                <br />
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create Account" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <br />
+            <br />
+            <br />
+            <br />
+    }
+
+</div>

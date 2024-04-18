@@ -119,9 +119,9 @@
 warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vw_role">
           <Key>
-            <PropertyRef Name="UserID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" Nullable="false" />
           <Property Name="Username" Type="nvarchar" MaxLength="100" />
           <Property Name="roleName" Type="nvarchar" MaxLength="100" />
         </EntityType>
@@ -234,7 +234,7 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <EntitySet Name="User_Information" EntityType="Self.User_Information" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="vw_role" EntityType="Self.vw_role" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
-    [vw_role].[UserID] AS [UserID], 
+    [vw_role].[id] AS [id], 
     [vw_role].[Username] AS [Username], 
     [vw_role].[roleName] AS [roleName]
     FROM [dbo].[vw_role] AS [vw_role]</DefiningQuery>
@@ -449,9 +449,9 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
         </EntityType>
         <EntityType Name="vw_role">
           <Key>
-            <PropertyRef Name="UserID" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
@@ -682,7 +682,7 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
               <MappingFragment StoreEntitySet="vw_role">
                 <ScalarProperty Name="roleName" ColumnName="roleName" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

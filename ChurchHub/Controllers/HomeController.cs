@@ -10,7 +10,7 @@ using System.Web.Security;
 
 namespace ChurchHub.Controllers
 {
-    
+    [Authorize(Roles ="Admin, User")]
     public class HomeController : BaseController
     {
         // GET: Home
@@ -57,7 +57,7 @@ namespace ChurchHub.Controllers
                     case Constant.Role_Admin:
                         return RedirectToAction("Index");
                     case Constant.Role_User:
-                        return RedirectToAction("Index", "Dashboard");
+                        return RedirectToAction("Index");
                     default:
                         return RedirectToAction("Index");
                 }
@@ -99,8 +99,6 @@ namespace ChurchHub.Controllers
         [AllowAnonymous]
         public ActionResult SignUp()
         {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index");
 
             ViewBag.Role = Utilities.ListRole;
 
@@ -108,7 +106,7 @@ namespace ChurchHub.Controllers
         }
         [AllowAnonymous]
         [HttpPost]
-        public ActionResult SignUp(User_Account ua, String ConfirmPass)
+        public ActionResult SignUp(User_Account ua, string ConfirmPass)
         {
             if (!ua.Password.Equals(ConfirmPass))
             {
@@ -127,6 +125,7 @@ namespace ChurchHub.Controllers
             TempData["username"] = ua.Username;
             return RedirectToAction("Verify");
         }
+
         [AllowAnonymous]
         public ActionResult Logout()
         {

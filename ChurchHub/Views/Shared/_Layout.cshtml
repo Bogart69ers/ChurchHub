@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-    <link rel="shortcut icon" href="assets/images/logo.ico" type="image/x-icon">
+    <title>@ViewBag.Title Church Connect</title>
+    <link rel="shortcut icon" href="/assets/images/logo.ico" type="image/x-icon">
     <meta name="description" content="">
-    <link rel="stylesheet" href="assets/web/assets/mobirise-icons2/mobirise2.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-    <link rel="stylesheet" href="assets/parallax/jarallax.css">
-    <link rel="stylesheet" href="assets/animatecss/animate.css">
-    <link rel="stylesheet" href="assets/dropdown/css/style.css">
-    <link rel="stylesheet" href="assets/theme/css/style.css">
+    <link rel="stylesheet" href="/assets/web/assets/mobirise-icons2/mobirise2.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/assets/parallax/jarallax.css">
+    <link rel="stylesheet" href="/assets/animatecss/animate.css">
+    <link rel="stylesheet" href="/assets/dropdown/css/style.css">
+    <link rel="stylesheet" href="/assets/theme/css/style.css">
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Inter+Tight:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter+Tight:100,200,300,400,500,600,700,800,900,100i,200i,300i,400i,500i,600i,700i,800i,900i&display=swap"></noscript>
-    <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css?v=CW5Q19">
-    <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=CW5Q19" type="text/css">
-    <title>@ViewBag.Title Church Connect</title>
+    <link rel="preload" as="style" href="/assets/mobirise/css/mbr-additional.css?v=CW5Q19">
+    <link rel="stylesheet" href="/assets/mobirise/css/mbr-additional.css?v=CW5Q19" type="text/css">
 
 </head>
 <body>
@@ -28,8 +28,8 @@
             <div class="container">
                 <div class="navbar-brand">
                     <span class="navbar-logo">
-                        <a href="https://mobiri.se">
-                            <img src="assets/images/logo.ico" alt="Mobirise Website Builder" style="height: 3rem;">
+                        <a href="">
+                            <img src="/assets/images/logo.ico" alt="Mobirise Website Builder" style="height: 3rem;">
                         </a>
                     </span>
                     <span class="navbar-caption-wrap"><a class="navbar-caption text-black text-primary display-4" href="index.html">Church Connect</a></span>
@@ -45,28 +45,71 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav nav-dropdown" data-app-modern-menu="true">
                         <li class="nav-item">
-                            <a class="nav-link link text-black display-4" href="~Home/Index">Home</a>
+                            <a class="nav-link link text-black display-4" href="/Home">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link link text-black display-4" href="~Home/Schedule" aria-expanded="false">Schedule</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link link text-black dropdown-toggle display-4" href="https://mobiri.se" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
-                            <div class="dropdown-menu" aria-labelledby="dropdown-278">
-                            <a class="text-black dropdown-item display-4" href="~Home/Intentions">Mass Intentions</a>
-                            <a class="text-black dropdown-item display-4" href="~Home/ReligiousShop">Religious Shop<br></a>
-                            </div>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link link text-black dropdown-toggle display-4" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdown-278">
+                                        <a class="text-black dropdown-item display-4" href="/Home/Intentions">Mass Intentions</a>
+                                        <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/SignUp" aria-expanded="false">Create Account</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/Profile" aria-expanded="false">@User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link link text-black dropdown-toggle display-4" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdown-278">
+                                        <a class="text-black dropdown-item display-4" href="/Home/Intentions">Mass Intentions</a>
+                                        <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
+                                    </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/Profile" aria-expanded="false">@User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
+                                </li>
+                            }
+
+                        }
+                        else
+                        {                          
+                            <li class="nav-item">
+                                <a class="nav-link link text-black display-4" href="/Home/Login" aria-expanded="false">Sign In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link link text-black display-4" href="/Home/SignUp" aria-expanded="false">Sign Up</a>
+                            </li>
+                        }
+                     
                     </ul>
 
-                    <div class="navbar-buttons mbr-section-btn"><a class="btn btn-primary display-4" href="Home/Login">Login</a></div>
+
                 </div>
             </div>
         </nav>
     </section>
-    <section data-bs-version="5.1" class="form03 cid-uagZCfXL7S" id="form03-1z">
         @RenderBody()
-    </section>
     <section data-bs-version="5.1" class="footer2 cid-uagYZQ5ASz" once="footers" id="footer02-1y">
 
 
@@ -82,12 +125,12 @@
             </div>
         </div>
     </section>
-    <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/parallax/jarallax.js"></script>
-    <script src="assets/smoothscroll/smooth-scroll.js"></script>
-    <script src="assets/ytplayer/index.js"></script>
-    <script src="assets/dropdown/js/navbar-dropdown.js"></script>
-    <script src="assets/theme/js/script.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/parallax/jarallax.js"></script>
+    <script src="/assets/smoothscroll/smooth-scroll.js"></script>
+    <script src="/assets/ytplayer/index.js"></script>
+    <script src="/assets/dropdown/js/navbar-dropdown.js"></script>
+    <script src="/assets/theme/js/script.js"></script>
 
 
     

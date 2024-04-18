@@ -14,7 +14,7 @@ namespace ChurchHub
     
     public partial class vw_role
     {
-        public int UserID { get; set; }
+        public int id { get; set; }
         public string Username { get; set; }
         public string roleName { get; set; }
     }

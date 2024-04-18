@@ -13,6 +13,11 @@ namespace ChurchHub.Repository
         public DbContext _db;
         public DbSet<T> _table;
 
+        public BaseRepository()
+        {
+            _db = new ChurchHubEntities();
+            _table = _db.Set<T>();
+        }
         public ErrorCode Create(T t, out string errorMsg)
         {
             try
