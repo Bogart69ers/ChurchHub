@@ -1,0 +1,123 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using ChurchHub.Utils;
+
+namespace ChurchHub.Repository
+{
+    public class AccountManager
+    {
+        private BaseRepository<User_Account> _userAcc;
+        private BaseRepository<User_Information> _userInfo;
+
+        public AccountManager()
+        {
+            _userAcc = new BaseRepository<User_Account>();
+            _userInfo = new BaseRepository<User_Information>();
+        }
+        public User_Account GetUserById(int Id)
+        {
+            return _userAcc.Get(Id);
+        }
+        public User_Account GetUserByUserId(String userId)
+        {
+            return _userAcc._table.Where(m => m.UserId == userId).FirstOrDefault();
+        }
+        public User_Account GetUserByUsername(String username)
+        {
+            return _userAcc._table.Where(m => m.Username == username).FirstOrDefault();
+        }
+        public User_Account GetUserByEmail(String email)
+        {
+            return _userAcc._table.Where(m => m.Email == email).FirstOrDefault();
+        }
+        public ErrorCode SignIn(String username, String password, ref String errMsg)
+        {
+            var userSignIn = GetUserByUsername(username);
+            if (userSignIn == null)
+            {
+                errMsg = "User not exist!";
+                return ErrorCode.Error;
+            }
+
+            if (!userSignIn.Password.Equals(password))
+            {
+                errMsg = "Password is Incorrect";
+                return ErrorCode.Error;
+            }
+
+            // user exist
+            errMsg = "Login Successful";
+            return ErrorCode.Success;
+        }
+
+        public ErrorCode SignUp(User_Account userac, ref String errMsg)
+        {
+            userac.UserId = Utilities.gUid;
+            userac.VerCode = Utilities.code.ToString();
+            userac.Date_created = DateTime.Now;
+            userac.AccountStatus = (Int32)Status.InActive;
+
+            if (GetUserByUsername(userac.Username) != null)
+            {
+                errMsg = "Username Already Exist";
+                return ErrorCode.Error;
+            }
+
+            if (GetUserByEmail(userac.Email) != null)
+            {
+                errMsg = "Email Already Exist";
+                return ErrorCode.Error;
+            }
+
+            if (_userAcc.Create(userac, out errMsg) != ErrorCode.Success)
+            {
+                return ErrorCode.Error;
+            }
+
+            // use the generated code for OTP "ua.code"
+            // send email or sms here...........
+
+            return ErrorCode.Success;
+        }
+
+        public ErrorCode UpdateUser(User_Account userac, ref String errMsg)
+        {
+            return _userAcc.Update(userac.id, userac, out errMsg);
+        }
+        public ErrorCode UpdateUserInformation(User_Information userinf, ref String errMsg)
+        {
+            return _userInfo.Update(userinf.id, userinf, out errMsg);
+        }
+        public User_Information GetUserInfoById(int id)
+        {
+            return _userInfo.Get(id);
+        }
+        public User_Information GetUserInfoByUsername(String username)
+        {
+            var userAcc = GetUserByUsername(username);
+            return _userInfo._table.Where(m => m.userId == userAcc.UserId).FirstOrDefault();
+        }
+        public User_Information GetUserInfoByUserId(String userId)
+        {
+            return _userInfo._table.Where(m => m.userId == userId).FirstOrDefault();
+        }
+        public User_Information CreateOrRetrieve(String username, ref String err)
+        {
+            var User = GetUserByUsername(username);
+            var UserInfo = GetUserInfoByUserId(User.UserId);
+            if (UserInfo != null)
+                return UserInfo;
+
+            UserInfo = new User_Information();
+            UserInfo.userId = User.UserId;
+            UserInfo.Status = (Int32)Status.Active;
+
+            _userInfo.Create(UserInfo, out err);
+
+            return GetUserInfoByUserId(User.UserId);
+        }
+
+    }
+}

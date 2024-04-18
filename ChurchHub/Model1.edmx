@@ -1,0 +1,712 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ChurchConnectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="BookingID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleID" Type="int" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" />
+          <Property Name="ParishionerID" Type="int" />
+          <Property Name="ScheduleDate" Type="date" />
+          <Property Name="Booking_Status" Type="nvarchar" MaxLength="100" />
+          <Property Name="Payment" Type="decimal" Precision="18" Scale="0" />
+        </EntityType>
+        <EntityType Name="Parishioner">
+          <Key>
+            <PropertyRef Name="ParishionerID" />
+          </Key>
+          <Property Name="ParishionerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CreatedBy" Type="int" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address" Type="nvarchar" MaxLength="100" />
+          <Property Name="CreatedDate" Type="date" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BookingID" Type="int" />
+          <Property Name="PaymentMethod" Type="nvarchar" MaxLength="100" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="PaymentDate" Type="date" />
+          <Property Name="PaymentStatus" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportID" />
+          </Key>
+          <Property Name="ReportID" Type="int" Nullable="false" />
+          <Property Name="ScheduleType" Type="int" />
+          <Property Name="Amount" Type="int" />
+          <Property Name="Date_Time" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="roleName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ScheduleTypeID" Type="int" />
+          <Property Name="Schedule_Status" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="ScheduleType">
+          <Key>
+            <PropertyRef Name="ScheduleTypeID" />
+          </Key>
+          <Property Name="ScheduleTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SheduleName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="User_Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="nvarchar(max)" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" />
+          <Property Name="AccountStatus" Type="int" />
+          <Property Name="Email" Type="nvarchar" MaxLength="255" />
+          <Property Name="Role" Type="int" />
+          <Property Name="VerCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Date_created" Type="datetime" />
+          <Property Name="Date_modified" Type="datetime" />
+          <Property Name="CreatedBy" Type="int" />
+        </EntityType>
+        <EntityType Name="User_Information">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="nvarchar(max)" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Street" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="Zip_code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_role">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="100" />
+          <Property Name="roleName" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_Booking_Schedule">
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="ScheduleID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parishioner_User_Account">
+          <End Role="User_Account" Type="Self.User_Account" Multiplicity="1" />
+          <End Role="Parishioner" Type="Self.Parishioner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Parishioner">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_Booking">
+          <End Role="Booking" Type="Self.Booking" Multiplicity="0..1" />
+          <End Role="Payment" Type="Self.Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="BookingID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="BookingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_ScheduleType">
+          <End Role="ScheduleType" Type="Self.ScheduleType" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleType">
+              <PropertyRef Name="ScheduleTypeID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ScheduleType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_ScheduleType">
+          <End Role="ScheduleType" Type="Self.ScheduleType" Multiplicity="0..1" />
+          <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleType">
+              <PropertyRef Name="ScheduleTypeID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ScheduleTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account_User_Account">
+          <End Role="User_Account" Type="Self.User_Account" Multiplicity="0..1" />
+          <End Role="User_Account1" Type="Self.User_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User_Account1">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account_User_Account1">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="User_Account" Type="Self.User_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="User_Account">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccount_CreatedBy">
+          <End Role="User_Account" Type="Self.User_Account" Multiplicity="0..1" />
+          <End Role="Booking" Type="Self.Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ChurchConnectModelStoreContainer">
+          <EntitySet Name="Booking" EntityType="Self.Booking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parishioner" EntityType="Self.Parishioner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScheduleType" EntityType="Self.ScheduleType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Account" EntityType="Self.User_Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User_Information" EntityType="Self.User_Information" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_role" EntityType="Self.vw_role" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_role].[UserID] AS [UserID], 
+    [vw_role].[Username] AS [Username], 
+    [vw_role].[roleName] AS [roleName]
+    FROM [dbo].[vw_role] AS [vw_role]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Booking_Schedule" Association="Self.FK_Booking_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parishioner_User_Account" Association="Self.FK_Parishioner_User_Account">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="Parishioner" EntitySet="Parishioner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_Booking" Association="Self.FK_Payment_Booking">
+            <End Role="Booking" EntitySet="Booking" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_ScheduleType" Association="Self.FK_Report_ScheduleType">
+            <End Role="ScheduleType" EntitySet="ScheduleType" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_ScheduleType" Association="Self.FK_Schedule_ScheduleType">
+            <End Role="ScheduleType" EntitySet="ScheduleType" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Account_User_Account" Association="Self.FK_User_Account_User_Account">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="User_Account1" EntitySet="User_Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Account_User_Account1" Association="Self.FK_User_Account_User_Account1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User_Account" EntitySet="User_Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccount_CreatedBy" Association="Self.FK_UserAccount_CreatedBy">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ChurchConnectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ChurchHubEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Booking" EntityType="ChurchConnectModel.Booking" />
+          <EntitySet Name="Parishioner" EntityType="ChurchConnectModel.Parishioner" />
+          <EntitySet Name="Payment" EntityType="ChurchConnectModel.Payment" />
+          <EntitySet Name="Report" EntityType="ChurchConnectModel.Report" />
+          <EntitySet Name="Role" EntityType="ChurchConnectModel.Role" />
+          <EntitySet Name="Schedule" EntityType="ChurchConnectModel.Schedule" />
+          <EntitySet Name="ScheduleType" EntityType="ChurchConnectModel.ScheduleType" />
+          <EntitySet Name="sysdiagrams" EntityType="ChurchConnectModel.sysdiagrams" />
+          <EntitySet Name="User_Account" EntityType="ChurchConnectModel.User_Account" />
+          <EntitySet Name="User_Information" EntityType="ChurchConnectModel.User_Information" />
+          <EntitySet Name="vw_role" EntityType="ChurchConnectModel.vw_role" />
+          <AssociationSet Name="FK_Booking_Schedule" Association="ChurchConnectModel.FK_Booking_Schedule">
+            <End Role="Schedule" EntitySet="Schedule" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Payment_Booking" Association="ChurchConnectModel.FK_Payment_Booking">
+            <End Role="Booking" EntitySet="Booking" />
+            <End Role="Payment" EntitySet="Payment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserAccount_CreatedBy" Association="ChurchConnectModel.FK_UserAccount_CreatedBy">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="Booking" EntitySet="Booking" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parishioner_User_Account" Association="ChurchConnectModel.FK_Parishioner_User_Account">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="Parishioner" EntitySet="Parishioner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Report_ScheduleType" Association="ChurchConnectModel.FK_Report_ScheduleType">
+            <End Role="ScheduleType" EntitySet="ScheduleType" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Account_User_Account1" Association="ChurchConnectModel.FK_User_Account_User_Account1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User_Account" EntitySet="User_Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Schedule_ScheduleType" Association="ChurchConnectModel.FK_Schedule_ScheduleType">
+            <End Role="ScheduleType" EntitySet="ScheduleType" />
+            <End Role="Schedule" EntitySet="Schedule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Account_User_Account" Association="ChurchConnectModel.FK_User_Account_User_Account">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="User_Account1" EntitySet="User_Account" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingID" />
+          </Key>
+          <Property Name="BookingID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <Property Name="ParishionerID" Type="Int32" />
+          <Property Name="ScheduleDate" Type="DateTime" Precision="0" />
+          <Property Name="Booking_Status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Payment" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="Schedule" Relationship="ChurchConnectModel.FK_Booking_Schedule" FromRole="Booking" ToRole="Schedule" />
+          <NavigationProperty Name="Payment1" Relationship="ChurchConnectModel.FK_Payment_Booking" FromRole="Booking" ToRole="Payment" />
+          <NavigationProperty Name="User_Account" Relationship="ChurchConnectModel.FK_UserAccount_CreatedBy" FromRole="Booking" ToRole="User_Account" />
+        </EntityType>
+        <EntityType Name="Parishioner">
+          <Key>
+            <PropertyRef Name="ParishionerID" />
+          </Key>
+          <Property Name="ParishionerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedBy" Type="Int32" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="User_Account" Relationship="ChurchConnectModel.FK_Parishioner_User_Account" FromRole="Parishioner" ToRole="User_Account" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="PaymentID" />
+          </Key>
+          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BookingID" Type="Int32" />
+          <Property Name="PaymentMethod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="0" />
+          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Booking" Relationship="ChurchConnectModel.FK_Payment_Booking" FromRole="Payment" ToRole="Booking" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportID" />
+          </Key>
+          <Property Name="ReportID" Type="Int32" Nullable="false" />
+          <Property Name="ScheduleType" Type="Int32" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="Date_Time" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ScheduleType1" Relationship="ChurchConnectModel.FK_Report_ScheduleType" FromRole="Report" ToRole="ScheduleType" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_Account" Relationship="ChurchConnectModel.FK_User_Account_User_Account1" FromRole="Role" ToRole="User_Account" />
+        </EntityType>
+        <EntityType Name="Schedule">
+          <Key>
+            <PropertyRef Name="ScheduleID" />
+          </Key>
+          <Property Name="ScheduleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleTypeID" Type="Int32" />
+          <Property Name="Schedule_Status" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Booking" Relationship="ChurchConnectModel.FK_Booking_Schedule" FromRole="Schedule" ToRole="Booking" />
+          <NavigationProperty Name="ScheduleType" Relationship="ChurchConnectModel.FK_Schedule_ScheduleType" FromRole="Schedule" ToRole="ScheduleType" />
+        </EntityType>
+        <EntityType Name="ScheduleType">
+          <Key>
+            <PropertyRef Name="ScheduleTypeID" />
+          </Key>
+          <Property Name="ScheduleTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SheduleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Report" Relationship="ChurchConnectModel.FK_Report_ScheduleType" FromRole="ScheduleType" ToRole="Report" />
+          <NavigationProperty Name="Schedule" Relationship="ChurchConnectModel.FK_Schedule_ScheduleType" FromRole="ScheduleType" ToRole="Schedule" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User_Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccountStatus" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="VerCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date_created" Type="DateTime" Precision="3" />
+          <Property Name="Date_modified" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <NavigationProperty Name="Booking" Relationship="ChurchConnectModel.FK_UserAccount_CreatedBy" FromRole="User_Account" ToRole="Booking" />
+          <NavigationProperty Name="Parishioner" Relationship="ChurchConnectModel.FK_Parishioner_User_Account" FromRole="User_Account" ToRole="Parishioner" />
+          <NavigationProperty Name="Role1" Relationship="ChurchConnectModel.FK_User_Account_User_Account1" FromRole="User_Account" ToRole="Role" />
+          <NavigationProperty Name="User_Account1" Relationship="ChurchConnectModel.FK_User_Account_User_Account" FromRole="User_Account" ToRole="User_Account1" />
+          <NavigationProperty Name="User_Account2" Relationship="ChurchConnectModel.FK_User_Account_User_Account" FromRole="User_Account1" ToRole="User_Account" />
+        </EntityType>
+        <EntityType Name="User_Information">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Street" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Zip_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vw_role">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Booking_Schedule">
+          <End Type="ChurchConnectModel.Schedule" Role="Schedule" Multiplicity="1" />
+          <End Type="ChurchConnectModel.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Schedule">
+              <PropertyRef Name="ScheduleID" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="ScheduleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Payment_Booking">
+          <End Type="ChurchConnectModel.Booking" Role="Booking" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.Payment" Role="Payment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Booking">
+              <PropertyRef Name="BookingID" />
+            </Principal>
+            <Dependent Role="Payment">
+              <PropertyRef Name="BookingID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserAccount_CreatedBy">
+          <End Type="ChurchConnectModel.User_Account" Role="User_Account" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parishioner_User_Account">
+          <End Type="ChurchConnectModel.User_Account" Role="User_Account" Multiplicity="1" />
+          <End Type="ChurchConnectModel.Parishioner" Role="Parishioner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Parishioner">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Report_ScheduleType">
+          <End Type="ChurchConnectModel.ScheduleType" Role="ScheduleType" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.Report" Role="Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleType">
+              <PropertyRef Name="ScheduleTypeID" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ScheduleType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account_User_Account1">
+          <End Type="ChurchConnectModel.Role" Role="Role" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.User_Account" Role="User_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="User_Account">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Schedule_ScheduleType">
+          <End Type="ChurchConnectModel.ScheduleType" Role="ScheduleType" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.Schedule" Role="Schedule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ScheduleType">
+              <PropertyRef Name="ScheduleTypeID" />
+            </Principal>
+            <Dependent Role="Schedule">
+              <PropertyRef Name="ScheduleTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account_User_Account">
+          <End Type="ChurchConnectModel.User_Account" Role="User_Account" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.User_Account" Role="User_Account1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User_Account1">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ChurchConnectModelStoreContainer" CdmEntityContainer="ChurchHubEntities">
+          <EntitySetMapping Name="Booking">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Booking">
+              <MappingFragment StoreEntitySet="Booking">
+                <ScalarProperty Name="Payment" ColumnName="Payment" />
+                <ScalarProperty Name="Booking_Status" ColumnName="Booking_Status" />
+                <ScalarProperty Name="ScheduleDate" ColumnName="ScheduleDate" />
+                <ScalarProperty Name="ParishionerID" ColumnName="ParishionerID" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parishioner">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Parishioner">
+              <MappingFragment StoreEntitySet="Parishioner">
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ParishionerID" ColumnName="ParishionerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payment">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
+                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
+                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Report">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="Date_Time" ColumnName="Date_Time" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ScheduleType" ColumnName="ScheduleType" />
+                <ScalarProperty Name="ReportID" ColumnName="ReportID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="roleName" ColumnName="roleName" />
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schedule">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Schedule">
+              <MappingFragment StoreEntitySet="Schedule">
+                <ScalarProperty Name="Schedule_Status" ColumnName="Schedule_Status" />
+                <ScalarProperty Name="ScheduleTypeID" ColumnName="ScheduleTypeID" />
+                <ScalarProperty Name="ScheduleID" ColumnName="ScheduleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleType">
+            <EntityTypeMapping TypeName="ChurchConnectModel.ScheduleType">
+              <MappingFragment StoreEntitySet="ScheduleType">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SheduleName" ColumnName="SheduleName" />
+                <ScalarProperty Name="ScheduleTypeID" ColumnName="ScheduleTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ChurchConnectModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Account">
+            <EntityTypeMapping TypeName="ChurchConnectModel.User_Account">
+              <MappingFragment StoreEntitySet="User_Account">
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Date_modified" ColumnName="Date_modified" />
+                <ScalarProperty Name="Date_created" ColumnName="Date_created" />
+                <ScalarProperty Name="VerCode" ColumnName="VerCode" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AccountStatus" ColumnName="AccountStatus" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Information">
+            <EntityTypeMapping TypeName="ChurchConnectModel.User_Information">
+              <MappingFragment StoreEntitySet="User_Information">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Zip_code" ColumnName="Zip_code" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_role">
+            <EntityTypeMapping TypeName="ChurchConnectModel.vw_role">
+              <MappingFragment StoreEntitySet="vw_role">
+                <ScalarProperty Name="roleName" ColumnName="roleName" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
