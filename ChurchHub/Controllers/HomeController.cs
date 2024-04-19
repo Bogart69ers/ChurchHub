@@ -96,6 +96,7 @@ namespace ChurchHub.Controllers
 
             return RedirectToAction("Login");
         }
+        
         [AllowAnonymous]
         public ActionResult SignUp()
         {
@@ -122,8 +123,25 @@ namespace ChurchHub.Controllers
                 ViewBag.Role = Utilities.ListRole;
                 return View(ua);
             }
+
+            var user = _AccManager.GetUserByEmail(ua.Email);
+            string verificationCode = ua.VerCode;
+
+            string emailBody = $"Your verification code is: {verificationCode}";
+            string errorMessage = "";
+
+            var mailManager = new MailManager();
+            bool emailSent = mailManager.SendEmail(ua.Email, "Verification Code", emailBody, ref errorMessage);
+
+            if (!emailSent)
+            {
+                ModelState.AddModelError(String.Empty, errorMessage);
+                ViewBag.Role = Utilities.ListRole;
+                return View(ua);
+            }
             TempData["username"] = ua.Username;
             return RedirectToAction("Verify");
+
         }
 
         [AllowAnonymous]

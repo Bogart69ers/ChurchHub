@@ -229,6 +229,7 @@
     </Compile>
     <Compile Include="Repository\AccountManager.cs" />
     <Compile Include="Repository\BaseRepository.cs" />
+    <Compile Include="Repository\EmailManager.cs" />
     <Compile Include="Repository\IBaseRepository.cs" />
     <Compile Include="Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -270,6 +271,7 @@
     <Content Include="Views\Home\Verify.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\SignUp.cshtml" />
+    <Content Include="Views\Home\MyProfile.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

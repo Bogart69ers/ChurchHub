@@ -6,33 +6,48 @@
 
 @using (Html.BeginForm())
 {
+    <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
 
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <div class="form-group">
-        Please enter OTP
-        <div class="col-md-10">
-            @TempData["error"]
-            <input type="hidden" name="username" value="@TempData["username"]" />
-            <input type="number" class="form-control" name="code" value="" required />
+    <section data-bs-version="5.1" class="form03 cid-uagZCfXL7S" id="form03-1z">
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg item-wrapper">
+                    <div class="mbr-section-head mb-5">
+                        <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-5">
+                            <strong>Enter OTP</strong>
+                        </h3>
+
+                    </div>
+                    <div class="col-lg-12 mx-auto mbr-form" data-form-type="formoid">
+                        <input type="hidden" name="email" data-form-email="true" value="ypwsixtd6j+sxA5zWOep7XVXQO4F9EeHqywLleKZfYhbwnW5/2ZjAhfY3Ss/QghZR+yxAAC849AQ3gP4lSlJ8q7SD8b50I+YY/F2P50dxhBF+WoJkdPipzKYzpPyUicJ">
+
+                        <div class="dragArea row">
+                            <div class="col-md col-sm-12 form-group mb-3 mb-3">
+                                @TempData["error"]
+                                <input type="hidden" name="username" value="@TempData["username"]" />
+                                <input type="number" class="form-control" name="code" value="" required />
+                            </div>
+
+                            <div class="form-group">
+                                <br />
+                                <div class="col-md-10">
+                                    <input type="submit" class="btn btn-success" value="Verify" />
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-12 col-lg-6">
+                    <div class="image-wrapper">
+                        <img class="w-100" src="/assets/images/logo.ico" alt="Mobirise Website Builder">
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" class="btn btn-success" value="Verify" />
-        </div>
-    </div>
 
-
+    </section>
 }
-
-<div class="form-group">
-    <div class="col-md-10">
-        <a href="~/Home/Login">Sign In</a>
-    </div>
-</div>
