@@ -49,51 +49,52 @@
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link link text-black dropdown-toggle display-4" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdown-278">
-                                        <a class="text-black dropdown-item display-4" href="/Home/Intentions">Mass Intentions</a>
-                                        <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/SignUp" aria-expanded="false">Create Account</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/MyProfile" aria-expanded="false">@User.Identity.Name</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link link text-black dropdown-toggle display-4" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
-                                    <div class="dropdown-menu" aria-labelledby="dropdown-278">
-                                        <a class="text-black dropdown-item display-4" href="/Home/Intentions">Mass Intentions</a>
-                                        <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
-                                    </div>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/MyProfle" aria-expanded="false">@User.Identity.Name</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
-                                </li>
-                            }
-
+                                if (User.IsInRole("Admin"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link link text-black dropdown-toggle display-4" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown-278">
+                                            <a class="text-black dropdown-item display-4" href="/Home/Intentions">Mass Intentions</a>
+                                            <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/SignUp" aria-expanded="false">Create Account</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/MyProfile" aria-expanded="false">@User.Identity.Name</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
+                                    </li>
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link link text-black dropdown-toggle display-4" data-toggle="dropdown-submenu" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Services</a>
+                                        <div class="dropdown-menu" aria-labelledby="dropdown-278">
+                                            <a class="text-black dropdown-item display-4" href="/Home/Booking">Reservation</a>
+                                            <a class="text-black dropdown-item display-4" href="/Home/Booking">Mass Intentions</a>
+                                            <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
+                                        </div>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/MyProfle" aria-expanded="false">@User.Identity.Name</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
+                                    </li>
+                                }
+                            
                         }
                         else
-                        {                          
+                        {
                             <li class="nav-item">
                                 <a class="nav-link link text-black display-4" href="/Home/Login" aria-expanded="false">Sign In</a>
                             </li>

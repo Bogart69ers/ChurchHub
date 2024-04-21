@@ -112,8 +112,14 @@ namespace ChurchHub.Repository
 
             UserInfo = new User_Information();
             UserInfo.userId = User.UserId;
+            UserInfo.Email = User.Email;
             UserInfo.Status = (Int32)Status.Active;
 
+            var userEmail = User.Email;
+            if(userEmail != null)
+            {
+                UserInfo.Email = userEmail;
+            }
             _userInfo.Create(UserInfo, out err);
 
             return GetUserInfoByUserId(User.UserId);

@@ -25,13 +25,15 @@ namespace ChurchHub.Controllers
         [AllowAnonymous]
         public ActionResult Login(String ReturnUrl)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated) { 
                 return RedirectToAction("Index");
+            }
 
             ViewBag.Error = String.Empty;
             ViewBag.ReturnUrl = ReturnUrl;
 
             return View();
+
         }
         [AllowAnonymous]
         [HttpPost]
@@ -40,12 +42,13 @@ namespace ChurchHub.Controllers
             if (_AccManager.SignIn(username, password, ref ErrorMessage) == ErrorCode.Success)
             {
                 var user = _AccManager.GetUserByUsername(username);
+                var info = _AccManager.GetUserInfoByUsername(username);
 
                 if (user.AccountStatus != (Int32)Status.Active)
                 {
                     TempData["username"] = username;
                     return RedirectToAction("Verify");
-                }
+                }             
                 //
                 FormsAuthentication.SetAuthCookie(username, false);
                 //
@@ -55,9 +58,23 @@ namespace ChurchHub.Controllers
                 switch (user.Role1.roleName)
                 {
                     case Constant.Role_Admin:
-                        return RedirectToAction("Index");
+                        if (info.FirstName == null)
+                        {
+                            return RedirectToAction("MyProfile");
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index");
+                        }
                     case Constant.Role_User:
-                        return RedirectToAction("Index");
+                        if(info.FirstName == null)
+                        {
+                          return RedirectToAction("MyProfile");
+                        }
+                        else
+                        {
+                          return RedirectToAction("Index");
+                        }
                     default:
                         return RedirectToAction("Index");
                 }
@@ -94,7 +111,7 @@ namespace ChurchHub.Controllers
             user.AccountStatus = (Int32)Status.Active;
             _AccManager.UpdateUser(user, ref ErrorMessage);
 
-            return RedirectToAction("Login");
+            return RedirectToAction("MyProfile");
         }
         
         [AllowAnonymous]
@@ -112,7 +129,9 @@ namespace ChurchHub.Controllers
             if (!ua.Password.Equals(ConfirmPass))
             {
                 ModelState.AddModelError(String.Empty, "Password not match");
-                ViewBag.Role = Utilities.ListRole;
+                var roleList = Utilities.ListRole;
+                roleList.FirstOrDefault(x => x.Value == "user").Selected = true;
+                ViewBag.Role = roleList;
                 return View(ua);
             }
 
@@ -155,13 +174,23 @@ namespace ChurchHub.Controllers
         public ActionResult MyProfile()
         {
             IsUserLoggedSession();
+
+            var username = User.Identity.Name;
+
             var user = _AccManager.CreateOrRetrieve(User.Identity.Name, ref ErrorMessage);
 
+            var userEmail = _AccManager.GetUserByEmail(user.Email);
+
+            ViewBag.userEmail = userEmail.Email;
             return View(user);
         }
         [HttpPost]
         public ActionResult MyProfile(User_Information userInf)
         {
+            var userEmail = _AccManager.GetUserByEmail(userInf.Email);
+
+            ViewBag.userEmail = userEmail.Email;
+
             if (_AccManager.UpdateUserInformation(userInf, ref ErrorMessage) == Utils.ErrorCode.Error)
             {
                 //

@@ -73,10 +73,11 @@
                                 <div class="col-12 form-group mb-3 mb-3">
                                     <input type="text" class="form-control" name="ConfirmPass" value="" placeholder="Confirm Password" required />
                                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                </div>
+                                </div>                                
                             }
                         }
-                        else {
+                        else
+                        {
                         <div class="col-md col-sm-12 form-group mb-3 mb-3">
                             <input type="text" class="form-control" name="username" value="" placeholder="Username" required />
                             @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
@@ -96,6 +97,11 @@
                             <input type="text" class="form-control" name="ConfirmPass" value="" placeholder="Confirm Password" required />
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                         </div>
+
+                        <div class="col-12 form-group mb-3 mb-3" hidden>
+                            @Html.DropDownList("Role", (IEnumerable<SelectListItem>)ViewBag.Role, new { @class = "form-control" })
+                        </div>
+
                         }
                         <div class="form-group">
                             <div class="col-md-10">
@@ -110,7 +116,8 @@
                         <div class="form-group">
                             <br />
                             <div class="col-md-10">
-                                <input type="submit" class="btn btn-success" value="Create Account" style="width: 100%;padding-left:10px;" />
+
+                                <input type="submit" class="btn btn-success" value="Create" style="width: 100%;padding-left:10px;" onclick="window.location.href='@Url.Action("MyProfile", "Home")'" />
                             </div>
                         </div>                 
                     </div>
