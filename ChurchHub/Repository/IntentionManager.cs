@@ -39,8 +39,7 @@ namespace ChurchHub.Repository
 
             intent.userId = user.userId;            
             intent.intentionStatus = (int)IntentionStatus.Pending;
-            // If creation succeeds, return ErrorCode.Success
-            // Attempt to create the new intention in the database
+
             if (_intention.Create(intent, out errMsg) != ErrorCode.Success)
             {           
                 
@@ -49,21 +48,6 @@ namespace ChurchHub.Repository
 
             return ErrorCode.Success;
         }
-        public Intention CreateIntentionByUserId(String username, ref String err)
-        {
-
-            var user = _accMgr.GetUserInfoByUsername(username);
-            var intention = GetIntentionByUserId(user.userId);
-
-            
-
-            intention = new Intention();
-            intention.userId = user.userId;
-            intention.intentionStatus = (Int32)IntentionStatus.Pending;
-
-            _intention.Create(intention, out err);
-
-            return GetIntentionByUserId(user.userId);
-        }
+       
     }
 }

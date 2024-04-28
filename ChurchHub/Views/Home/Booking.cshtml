@@ -229,53 +229,5 @@
             updateDropdownOptions();
         </script>
 
-        <script>
-            function updateInput() {
-
-                var serviceSelect = (document.getElementById('service').value);
-                var priceInput = document.getElementById("price");
-
-    serviceSelect.addEventListener("change", function () {
-
-        var selectedService = serviceSelect.value;
-
-        switch(selectedService) {
-            case "Cleaning Service":
-                priceInput.value = "₱1,500";
-                break;
-            case "Plumbing":
-                priceInput.value = "₱3,000";
-                break;
-            case "Electricians":
-                priceInput.value = "₱7,500";
-                break;
-            case "Appliance Repair":
-                priceInput.value = "₱2,500";
-                break;
-            case "HVAC Technicians":
-                priceInput.value = "₱3,500";
-                break;
-            case "Computer Repair and IT Support":
-                priceInput.value = "₱5,500";
-                break;
-            case "Home Security Systems":
-                priceInput.value = "₱10,500";
-                break;
-            case "Handyman Services":
-                priceInput.value = "₱7,500";
-                break;
-            case "Gardening":
-                priceInput.value = "₱3,500";
-                break;
-            default:
-                priceInput.value = "0.00";
-        }
-    });
-    document.getElementById('service').addEventListener('change', updateInput);
-
-    updateInput();
-            }</script>
-  
-
 </body>
 </html>
