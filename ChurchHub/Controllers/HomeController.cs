@@ -191,7 +191,7 @@ namespace ChurchHub.Controllers
 
             ViewBag.userEmail = userEmail.Email;
 
-            if (_AccManager.UpdateUserInformation(userInf, ref ErrorMessage) == Utils.ErrorCode.Error)
+            if (_AccManager.UpdateUserInformation(userInf, ref ErrorMessage) == ErrorCode.Error)
             {
                 //
                 ModelState.AddModelError(String.Empty, ErrorMessage);
@@ -206,6 +206,33 @@ namespace ChurchHub.Controllers
         public ActionResult PageNotFound()
         {
             return Content("Not Found Error 404");
+        }
+        [Authorize]
+        public ActionResult Booking()
+        {
+            IsUserLoggedSession();
+            var username = User.Identity.Name;
+            ViewBag.IntentionType = Utilities.ListCategory;
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Booking(Intention intent)
+        {
+            var username = User.Identity.Name;
+            var user = _AccManager.GetUserInfoByUserId(UserId); // Get the user info
+
+            if (_intentionMgr.CreateIntention(intent, username, ref ErrorMessage) != ErrorCode.Success)
+            {
+                ModelState.AddModelError(String.Empty, ErrorMessage);
+
+                ViewBag.IntentionType = Utilities.ListCategory;
+                return View(intent);
+            }
+                         
+                // If the model state is not valid, return the view with validation errors
+                ViewBag.IntentionType = Utilities.ListCategory;
+                return View(intent);
+            
         }
     }
 }

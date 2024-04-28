@@ -64,15 +64,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link link text-black display-4" href="/Home/SignUp" aria-expanded="false">Create Account</a>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link link text-black display-4" href="/Home/MyProfile" aria-expanded="false">@User.Identity.Name</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
-                                    </li>
-                                }
-                                else
-                                {
+                            }
+                            else
+                            {
                                     <li class="nav-item">
                                         <a class="nav-link link text-black display-4" href="/Home/Schedule" aria-expanded="false">Schedule</a>
                                     </li>
@@ -84,14 +78,16 @@
                                             <a class="text-black dropdown-item display-4" href="/Home/Shop">Religious Shop<br></a>
                                         </div>
                                     </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link link text-black display-4" href="/Home/MyProfle" aria-expanded="false">@User.Identity.Name</a>
-                                    </li>
+                                   
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link link text-black display-4" href="/Home/MyProfile" aria-expanded="false">@User.Identity.Name</a>
+                            </li>
                                     <li class="nav-item">
                                         <a class="nav-link link text-black display-4" href="/Home/Logout" aria-expanded="false">Sign Out</a>
                                     </li>
-                                }
-                            
+
+
                         }
                         else
                         {
@@ -110,7 +106,9 @@
             </div>
         </nav>
     </section>
-        @RenderBody()
+
+    @RenderBody()
+
     <section data-bs-version="5.1" class="footer2 cid-uagYZQ5ASz" once="footers" id="footer02-1y">
 
 

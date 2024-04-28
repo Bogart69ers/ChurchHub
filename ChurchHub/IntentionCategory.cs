@@ -12,20 +12,18 @@ namespace ChurchHub
     using System;
     using System.Collections.Generic;
     
-    public partial class Schedule
+    public partial class IntentionCategory
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Schedule()
+        public IntentionCategory()
         {
-            this.Booking = new HashSet<Booking>();
+            this.Intention = new HashSet<Intention>();
         }
     
-        public int ScheduleID { get; set; }
-        public Nullable<int> ScheduleTypeID { get; set; }
-        public string Schedule_Status { get; set; }
+        public int intentionId { get; set; }
+        public string intentionName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Booking> Booking { get; set; }
-        public virtual ScheduleType ScheduleType { get; set; }
+        public virtual ICollection<Intention> Intention { get; set; }
     }
 }

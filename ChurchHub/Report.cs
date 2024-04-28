@@ -18,7 +18,5 @@ namespace ChurchHub
         public Nullable<int> ScheduleType { get; set; }
         public Nullable<int> Amount { get; set; }
         public Nullable<System.DateTime> Date_Time { get; set; }
-    
-        public virtual ScheduleType ScheduleType1 { get; set; }
     }
 }

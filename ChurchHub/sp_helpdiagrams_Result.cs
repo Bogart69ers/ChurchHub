@@ -10,15 +10,13 @@
 namespace ChurchHub
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Payment
+    public partial class sp_helpdiagrams_Result
     {
-        public int PaymentID { get; set; }
-        public Nullable<int> BookingID { get; set; }
-        public string PaymentMethod { get; set; }
-        public Nullable<decimal> Amount { get; set; }
-        public Nullable<System.DateTime> PaymentDate { get; set; }
-        public string PaymentStatus { get; set; }
+        public string Database { get; set; }
+        public string Name { get; set; }
+        public int ID { get; set; }
+        public string Owner { get; set; }
+        public int OwnerID { get; set; }
     }
 }

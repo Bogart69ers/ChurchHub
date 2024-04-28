@@ -12,6 +12,8 @@ namespace ChurchHub.Utils
         Success,
         Error
     }
+
+
     public enum RoleType
     {
         Admin,
@@ -22,6 +24,12 @@ namespace ChurchHub.Utils
     {
         InActive,
         Active
+    }
+
+    public enum IntentionStatus
+    {
+        Pending,
+        Done
     }
     public class Constant
     {
@@ -70,6 +78,24 @@ namespace ChurchHub.Utils
 
                 return list;
             }
-        }  
+        } 
+        public static List<SelectListItem> ListCategory
+        {
+            get
+            {
+                BaseRepository<IntentionCategory> intcat = new BaseRepository<IntentionCategory>();
+                var list = new List<SelectListItem>();
+                foreach (var item in intcat.GetAll())
+                {
+                    var i = new SelectListItem
+                    {
+                        Text = item.intentionName,
+                        Value = item.intentionId.ToString()
+                    };
+                    list.Add(i);
+                }
+                return list;
+            }
+        } 
     }
 }

@@ -1,7 +1,226 @@
-﻿
+﻿@model ChurchHub.Intention
 @{
     ViewBag.Title = "Booking";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Site made with Mobirise Website Builder v5.9.17, https://mobirise.com -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="generator" content="Mobirise v5.9.17, mobirise.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <link rel="shortcut icon" href="assets/images/logo5.png" type="image/x-icon">
+    <meta name="description" content="A seamless booking system for church appointments, offering a convenient way to schedule mass intentions.">
+
+
+    <title>Church Appointment Booking</title>
+    <link rel="stylesheet" href="/assets/book/mobirise2.css">
+    <link rel="stylesheet" href="/assets/book/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/book/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="/assets/book/bootstrap-reboot.min.css">
+    <link rel="stylesheet" href="/assets/book/style.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&display=swap&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;700&display=swap&display=swap"></noscript>
+    <link rel="preload" as="style" href="/assets/book/mbr-additional.css?v=YAXjzo">
+    <link rel="stylesheet" href="/assets/book/mbr-additional.css?v=YAXjzo" type="text/css">
+
+
+
+</head>
+<body>
+    <br />
+    <br />
+    <section data-bs-version="5.1" class="slider4 mbr-embla cid-uaGJZG1kC8" id="gallery-5-uaGJZG1kC8">
+
+
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="embla position-relative" data-skip-snaps="true" data-align="center" data-contain-scroll="trimSnaps" data-loop="true" data-auto-play="true" data-auto-play-interval="1" data-draggable="true">
+                        <div class="embla__viewport">
+                            <div class="embla__container">
+                                <div class="embla__slide slider-image item" style="margin-left: 0rem; margin-right: 0rem;">
+                                    <div class="slide-content">
+                                        <div class="item-img">
+                                            <div class="item-wrapper">
+                                                <img src="/assets/book/photo-1571069424149-c456e0b413d6.jpeg" alt="Mobirise Website Builder" title="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="embla__slide slider-image item" style="margin-left: 0rem; margin-right: 0rem;">
+                                    <div class="slide-content">
+                                        <div class="item-img">
+                                            <div class="item-wrapper">
+                                                <img src="/assets/book/photo-1547382002-b908c9367d83.jpeg" alt="Mobirise Website Builder" title="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="embla__slide slider-image item" style="margin-left: 0rem; margin-right: 0rem;">
+                                    <div class="slide-content">
+                                        <div class="item-img">
+                                            <div class="item-wrapper">
+                                                <img src="/assets/book/photo-1555892727-55b51e5fceae.jpeg" alt="Mobirise Website Builder" title="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="embla__slide slider-image item" style="margin-left: 0rem; margin-right: 0rem;">
+                                    <div class="slide-content">
+                                        <div class="item-img">
+                                            <div class="item-wrapper">
+                                                <img src="/assets/book/photo-1579975096649-e773152b04cb.jpeg" alt="Mobirise Website Builder" title="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="embla__slide slider-image item" style="margin-left: 0rem; margin-right: 0rem;">
+                                    <div class="slide-content">
+                                        <div class="item-img">
+                                            <div class="item-wrapper">
+                                                <img src="/assets/book/photo-1491396023581-4344e51fec5c.jpeg" alt="Mobirise Website Builder" title="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="embla__button embla__button--prev">
+                            <span class="mobi-mbri mobi-mbri-arrow-prev" aria-hidden="true"></span>
+                            <span class="sr-only visually-hidden visually-hidden">Previous</span>
+                        </button>
+                        <button class="embla__button embla__button--next">
+                            <span class="mobi-mbri mobi-mbri-arrow-next" aria-hidden="true"></span>
+                            <span class="sr-only visually-hidden visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+        <section data-bs-version="5.1" class="form5 cid-uaGJZG2uUG" id="contact-form-3-uaGJZG2uUG">
+
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 content-head">
+                        <div class="mbr-section-head mb-5">
+                            <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                                <strong>Book Your Divine Appointment</strong>
+                            </h3>
+
+                        </div>
+                    </div>
+                </div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
+                        
+                                @if (!String.IsNullOrEmpty(TempData["Message"] as String))
+                                {
+                                    <span class="alert alert-success">@TempData["Message"]</span>
+                                    <br /><br /><br />
+                                }
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.intentionId)
+
+                                <div class="form-group" hidden>
+                                    @Html.LabelFor(model => model.userId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.userId, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <input type="hidden" name="email" data-form-email="true" value="sLNzuRYwAWdfQLFK7eZEG7znYFVuCnk1kTYjvVCcCyYJIcOH9IZnJnPbjeNUNBQ/L5d1YZ9VoQZixIlP5dr17/FZZ8DdIMpCn+uRHduVCsA2IyegHtkX7aBNbDHo+WPI">
+                                <div class="row">
+                                    <div hidden="hidden" data-form-alert="" class="alert alert-success col-12">Thanks for filling out the form!</div>
+                                    <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
+                                        Oops...! some problem!
+                                    </div>
+                                </div>
+                                <div class="dragArea row">
+                                    <div class="col-md col-sm-12 form-group mb-3" data-for="name">
+                                        <input type="text" name="offeredby" placeholder="Offered by" data-form-field="name" class="form-control" value="" id="name-contact-form-3-uaGJZG2uUG">
+                                    </div>
+                                    <div class="col-md col-sm-12 form-group mb-3" data-for="url">
+                                        <input type="date" id="intentionDate" name="intentionDate" placeholder="Date of mass intention" data-form-field="url" class="form-control" value="" >
+                                    </div>
+                                    <div class="col-md col-sm-12 form-group mb-3" data-for="massTime">
+                                        <select name="massTime" class="form-control" id="massTime">
+                                        </select>
+                                    </div>
+                                    <div class="col-12 form-group mb-3 mb-3" data-for="type of intention">
+                                        @Html.DropDownList("intentionType", (IEnumerable<SelectListItem>)ViewBag.IntentionType, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-12 form-group mb-3" data-for="intentionDetails">
+                                        <textarea name="intentionDetails" placeholder="Details for mass intention" data-form-field="intentionDetails" class="form-control" id="intentionDetails"></textarea>
+                                    </div>
+
+                                    @Html.HiddenFor(model => model.intentionStatus)
+
+                                    <div class="col-lg-12 col-md-12 col-sm-12 align-center mbr-section-btn">
+                                        <button type="submit" class="btn btn-primary display-7">Schedule Now</button>
+                                    </div>
+                                </div>
+                       
+                       
+                    </div>
+                </div>
+}
+            </div>
+
+        </section>
+        <script src="/assets/book/bootstrap.bundle.min.js"></script>
+        <script src="/assets/book/smooth-scroll.js"></script>
+        <script src="/assets/book/index.js"></script>
+        <script src="/assets/book/embla.min.js"></script>
+        <script src="/assets/book/script.js"></script>
+        <script src="/assets/book/theme/js/script.js"></script>
+        <script src="/assets/book/formoid.min.js"></script>
+        <script>
+            function updateDropdownOptions() {
+                var intentionDate = new Date(document.getElementById('intentionDate').value);
+                var dropdown = document.getElementById('massTime');
+                dropdown.innerHTML = ''; 
+
+                if (intentionDate && intentionDate >= new Date()) {
+                    if (intentionDate.getDay() === 0) { 
+                        addOption(dropdown, '05:30 AM', '5:30 AM');
+                        addOption(dropdown, '08:00 AM', '8:00 AM');
+                        addOption(dropdown, '09:30 AM', '9:30 AM');
+                        addOption(dropdown, '04:00 PM', '4:00 PM');
+                        addOption(dropdown, '05:30 PM', '5:30 PM');
+                        addOption(dropdown, '07:00 PM', '7:00 PM');
+                    } else { 
+                        addOption(dropdown, '05:00 AM', '5:00 AM');
+                        addOption(dropdown, '05:30 PM', '5:30 PM');
+                    }
+                } else {
+                    dropdown.disabled = false;
+                }
+            }
+
+            function addOption(select, value, text) {
+                var option = document.createElement('option');
+                option.value = value;
+                option.textContent = text;
+                select.appendChild(option);
+            }
+
+            document.getElementById('intentionDate').addEventListener('change', updateDropdownOptions);
+
+            updateDropdownOptions();
+        </script>
+
+</body>
+</html>
