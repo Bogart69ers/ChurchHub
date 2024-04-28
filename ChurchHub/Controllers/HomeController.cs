@@ -234,5 +234,9 @@ namespace ChurchHub.Controllers
                 return View(intent);
             
         }
+        public ActionResult Schedule()
+        {
+            return View();
+        }
     }
 }

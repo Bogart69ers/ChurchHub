@@ -193,7 +193,8 @@
                 var dropdown = document.getElementById('massTime');
                 dropdown.innerHTML = ''; 
 
-                if (intentionDate && intentionDate >= new Date()) {
+                if (intentionDate && intentionDate >= new Date())
+                {
                     if (intentionDate.getDay() === 0) { 
                         addOption(dropdown, '05:30 AM', '5:30 AM');
                         addOption(dropdown, '08:00 AM', '8:00 AM');
@@ -201,15 +202,21 @@
                         addOption(dropdown, '04:00 PM', '4:00 PM');
                         addOption(dropdown, '05:30 PM', '5:30 PM');
                         addOption(dropdown, '07:00 PM', '7:00 PM');
-                    } else { 
+                    }
+                    else
+                    {
                         addOption(dropdown, '05:00 AM', '5:00 AM');
                         addOption(dropdown, '05:30 PM', '5:30 PM');
                     }
-                } else {
+
+                }
+                else
+                {
                     dropdown.disabled = false;
                 }
             }
 
+            if(selectedService)
             function addOption(select, value, text) {
                 var option = document.createElement('option');
                 option.value = value;
@@ -221,6 +228,54 @@
 
             updateDropdownOptions();
         </script>
+
+        <script>
+            function updateInput() {
+
+                var serviceSelect = (document.getElementById('service').value);
+                var priceInput = document.getElementById("price");
+
+    serviceSelect.addEventListener("change", function () {
+
+        var selectedService = serviceSelect.value;
+
+        switch(selectedService) {
+            case "Cleaning Service":
+                priceInput.value = "₱1,500";
+                break;
+            case "Plumbing":
+                priceInput.value = "₱3,000";
+                break;
+            case "Electricians":
+                priceInput.value = "₱7,500";
+                break;
+            case "Appliance Repair":
+                priceInput.value = "₱2,500";
+                break;
+            case "HVAC Technicians":
+                priceInput.value = "₱3,500";
+                break;
+            case "Computer Repair and IT Support":
+                priceInput.value = "₱5,500";
+                break;
+            case "Home Security Systems":
+                priceInput.value = "₱10,500";
+                break;
+            case "Handyman Services":
+                priceInput.value = "₱7,500";
+                break;
+            case "Gardening":
+                priceInput.value = "₱3,500";
+                break;
+            default:
+                priceInput.value = "0.00";
+        }
+    });
+    document.getElementById('service').addEventListener('change', updateInput);
+
+    updateInput();
+            }</script>
+  
 
 </body>
 </html>

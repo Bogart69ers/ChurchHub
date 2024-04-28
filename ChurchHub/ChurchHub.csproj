@@ -132,7 +132,6 @@
     <Content Include="assets\book\bootstrap-reboot.min.css" />
     <Content Include="assets\book\bootstrap.bundle.min.js" />
     <Content Include="assets\book\bootstrap.min.css" />
-    <Content Include="assets\book\datelistener.js" />
     <Content Include="assets\book\embla.min.js" />
     <Content Include="assets\book\formoid.min.js" />
     <Content Include="assets\book\logo5.png" />
@@ -144,6 +143,7 @@
     <Content Include="assets\book\photo-1555892727-55b51e5fceae.jpeg" />
     <Content Include="assets\book\photo-1571069424149-c456e0b413d6.jpeg" />
     <Content Include="assets\book\photo-1579975096649-e773152b04cb.jpeg" />
+    <Content Include="assets\book\Schedule.css" />
     <Content Include="assets\book\script.js" />
     <Content Include="assets\book\smooth-scroll.js" />
     <Content Include="assets\book\style.css" />
@@ -301,6 +301,7 @@
     <Content Include="Views\Home\SignUp.cshtml" />
     <Content Include="Views\Home\MyProfile.cshtml" />
     <Content Include="Views\Home\Booking.cshtml" />
+    <Content Include="Views\Home\Schedule.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
