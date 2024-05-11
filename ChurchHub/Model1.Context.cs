@@ -27,6 +27,7 @@ namespace ChurchHub
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<Intention> Intention { get; set; }
         public virtual DbSet<IntentionCategory> IntentionCategory { get; set; }
         public virtual DbSet<IntentionDetail> IntentionDetail { get; set; }

@@ -317,6 +317,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Image.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Intention.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -354,6 +357,7 @@
     <Compile Include="Repository\BaseRepository.cs" />
     <Compile Include="Repository\EmailManager.cs" />
     <Compile Include="Repository\IBaseRepository.cs" />
+    <Compile Include="Repository\ImageManager.cs" />
     <Compile Include="Repository\IntentionManager.cs" />
     <Compile Include="Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
@@ -404,6 +408,8 @@
     <Content Include="Views\Admin\AdminCreateAccount.cshtml" />
     <Content Include="Views\Home\Delete.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
+    <Content Include="Views\Admin\Intentions.cshtml" />
+    <Content Include="Views\Home\MyIntentions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -413,7 +419,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadedFiles\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\File\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

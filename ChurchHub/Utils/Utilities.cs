@@ -29,7 +29,9 @@ namespace ChurchHub.Utils
     public enum IntentionStatus
     {
         Pending,
-        Done
+        Scheduled,
+        Complete
+        
     }
     public class Constant
     {

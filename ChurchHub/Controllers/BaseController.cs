@@ -13,6 +13,8 @@ namespace ChurchHub.Controllers
         public AccountManager _AccManager;
         public IntentionManager _intentionMgr;
         public BaseRepository<User_Account> _UserAcc;
+        public ImageManager _imgMgr;
+        public BaseRepository<Intention> _intention;
 
         public String Username { get { return User.Identity.Name; } }
         public String UserId { get { return _AccManager.GetUserByUsername(Username).UserId; } }
@@ -23,9 +25,12 @@ namespace ChurchHub.Controllers
             _AccManager = new AccountManager();
             _intentionMgr = new IntentionManager();
             _UserAcc = new BaseRepository<User_Account>();
-        }
+            _intention = new  BaseRepository<Intention>();
+            _imgMgr = new ImageManager();
 
-        public void IsUserLoggedSession()
+    }
+
+    public void IsUserLoggedSession()
         {
             UserLogged userLogged = new UserLogged();
             if (User != null)

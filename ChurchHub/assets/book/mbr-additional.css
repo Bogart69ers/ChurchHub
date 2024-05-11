@@ -20,10 +20,10 @@ body {
   background-color: #f1eaf8;
 }
 body {
-  font-family: Source Serif 4;
+  font-family: 'Inter Tight', sans-serif;
 }
 .display-1 {
-  font-family: 'Source Serif 4', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 5rem;
   line-height: 1;
 }
@@ -31,7 +31,7 @@ body {
   font-size: 6.25rem;
 }
 .display-2 {
-  font-family: 'Source Serif 4', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 4rem;
   line-height: 1;
 }
@@ -39,7 +39,7 @@ body {
   font-size: 5rem;
 }
 .display-4 {
-  font-family: 'Source Serif 4', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 1.2rem;
   line-height: 1.5;
 }
@@ -47,7 +47,7 @@ body {
   font-size: 1.5rem;
 }
 .display-5 {
-  font-family: 'Source Serif 4', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 2.5rem;
   line-height: 1.5;
 }
@@ -55,7 +55,7 @@ body {
   font-size: 3.125rem;
 }
 .display-7 {
-  font-family: 'Source Serif 4', sans-serif;
+  font-family: 'Inter Tight', sans-serif;
   font-size: 1.4rem;
   line-height: 1.3;
 }

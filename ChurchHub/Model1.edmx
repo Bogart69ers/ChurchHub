@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="ChurchConnectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="userId" Type="int" />
+          <Property Name="imageFile" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="Intention">
           <Key>
             <PropertyRef Name="intentionId" />
@@ -96,8 +104,7 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="100" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="Email" Type="nvarchar" MaxLength="100" />
-          <Property Name="Street" Type="nvarchar" MaxLength="255" />
-          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="Address" Type="nvarchar" MaxLength="255" />
           <Property Name="State" Type="nvarchar" MaxLength="255" />
           <Property Name="Zip_code" Type="nvarchar" MaxLength="255" />
           <Property Name="Status" Type="int" />
@@ -112,6 +119,18 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <Property Name="Username" Type="nvarchar" MaxLength="100" />
           <Property Name="roleName" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <Association Name="FK_Image_User_Information">
+          <End Role="User_Information" Type="Self.User_Information" Multiplicity="0..1" />
+          <End Role="Image" Type="Self.Image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Information">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Image">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Intention_ScheduleType">
           <End Role="IntentionCategory" Type="Self.IntentionCategory" Multiplicity="0..1" />
           <End Role="Intention" Type="Self.Intention" Multiplicity="*" />
@@ -204,6 +223,7 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
         </Function>
         <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="ChurchConnectModelStoreContainer">
+          <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Intention" EntityType="Self.Intention" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IntentionCategory" EntityType="Self.IntentionCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IntentionDetail" EntityType="Self.IntentionDetail" Schema="dbo" store:Type="Tables" />
@@ -220,6 +240,10 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
     [vw_role].[roleName] AS [roleName]
     FROM [dbo].[vw_role] AS [vw_role]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_Image_User_Information" Association="Self.FK_Image_User_Information">
+            <End Role="User_Information" EntitySet="User_Information" />
+            <End Role="Image" EntitySet="Image" />
+          </AssociationSet>
           <AssociationSet Name="FK_Intention_ScheduleType" Association="Self.FK_Intention_ScheduleType">
             <End Role="IntentionCategory" EntitySet="IntentionCategory" />
             <End Role="Intention" EntitySet="Intention" />
@@ -284,6 +308,7 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
             <Parameter Name="AccountStatus" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
+          <EntitySet Name="Image" EntityType="ChurchConnectModel.Image" />
           <EntitySet Name="Intention" EntityType="ChurchConnectModel.Intention" />
           <EntitySet Name="IntentionCategory" EntityType="ChurchConnectModel.IntentionCategory" />
           <EntitySet Name="IntentionDetail" EntityType="ChurchConnectModel.IntentionDetail" />
@@ -294,6 +319,10 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <EntitySet Name="User_Account" EntityType="ChurchConnectModel.User_Account" />
           <EntitySet Name="User_Information" EntityType="ChurchConnectModel.User_Information" />
           <EntitySet Name="vw_role" EntityType="ChurchConnectModel.vw_role" />
+          <AssociationSet Name="FK_Image_User_Information" Association="ChurchConnectModel.FK_Image_User_Information">
+            <End Role="User_Information" EntitySet="User_Information" />
+            <End Role="Image" EntitySet="Image" />
+          </AssociationSet>
           <AssociationSet Name="FK_Intention_ScheduleType" Association="ChurchConnectModel.FK_Intention_ScheduleType">
             <End Role="IntentionCategory" EntitySet="IntentionCategory" />
             <End Role="Intention" EntitySet="Intention" />
@@ -322,6 +351,15 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="imageFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_Information" Relationship="ChurchConnectModel.FK_Image_User_Information" FromRole="Image" ToRole="User_Information" />
+        </EntityType>
         <EntityType Name="Intention">
           <Key>
             <PropertyRef Name="intentionId" />
@@ -421,11 +459,11 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Street" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Zip_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="Image" Relationship="ChurchConnectModel.FK_Image_User_Information" FromRole="User_Information" ToRole="Image" />
         </EntityType>
         <EntityType Name="vw_role">
           <Key>
@@ -435,6 +473,18 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
+        <Association Name="FK_Image_User_Information">
+          <End Type="ChurchConnectModel.User_Information" Role="User_Information" Multiplicity="0..1" />
+          <End Type="ChurchConnectModel.Image" Role="Image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Information">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Image">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Intention_ScheduleType">
           <End Type="ChurchConnectModel.IntentionCategory" Role="IntentionCategory" Multiplicity="0..1" />
           <End Type="ChurchConnectModel.Intention" Role="Intention" Multiplicity="*" />
@@ -515,6 +565,15 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ChurchConnectModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_updateRole" FunctionName="ChurchConnectModel.Store.sp_updateRole" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ChurchConnectModel.Store.sp_upgraddiagrams" />
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="imageFile" ColumnName="imageFile" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Intention">
             <EntityTypeMapping TypeName="ChurchConnectModel.Intention">
               <MappingFragment StoreEntitySet="Intention">
@@ -610,8 +669,7 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="Zip_code" ColumnName="Zip_code" />
                 <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ChurchHub.Intention>
+@{
+    ViewBag.Title = "MyIntentions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet" />
+<link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
+<link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
+<link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+<link rel="stylesheet" href="/assets/css/demo.css" />
+<link rel="stylesheet" href="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+<script src="/assets/vendor/js/helpers.js"></script>
+<script src="/assets/js/config.js"></script>
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="card">
+    <h5 class="card-header">Pending Intentions</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Offered By</th>
+                    <th>Intention Type</th>
+                    <th>Intention Date</th>
+                    <th>Mass Time</th>
+                    <th>Intention Details</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.offeredBy)</strong></td>
+                        <td>
+                            @if (item.intentionType == 1)
+                            {
+                                <span>Souls</span>
+                            }
+                            else if (item.intentionType == 2)
+                            {
+                                <span>Thanksgiving</span>
+                            }
+                            else if (item.intentionType == 3)
+                            {
+                                <span>Healing</span>
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.intentionDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.massTime)</td>
+                        <td>@Html.DisplayFor(modelItem => item.intentionDetails)</td>
+                        <td>
+                            @if (item.intentionStatus == 0)
+                            {
+                                <span class="badge bg-label-warning me-1">Pending</span>
+                            }
+                            else if (item.intentionStatus == 1)
+                            {
+                                <span class="badge bg-label-info me-1">Scheduled</span>
+                            }
+                            else if (item.intentionStatus == 2)
+                            {
+                                <span class="badge bg-label-success me-1">Complete</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+<script src="/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/assets/vendor/libs/popper/popper.js"></script>
+<script src="/assets/vendor/js/bootstrap.js"></script>
+<script src="/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/assets/vendor/js/menu.js"></script>
+
+<script src="/assets/js/main.js"></script>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>

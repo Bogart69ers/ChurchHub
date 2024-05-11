@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using System.IO;
+
 
 namespace ChurchHub.Controllers
 {
@@ -183,24 +185,44 @@ namespace ChurchHub.Controllers
             var userEmail = _AccManager.GetUserByEmail(user.Email);
 
             ViewBag.userEmail = userEmail.Email;
+
             return View(user);
         }
         [HttpPost]
-        public ActionResult MyProfile(User_Information userInf)
+        public ActionResult MyProfile(User_Information userInf, HttpPostedFileBase profilePicture)
         {
-            var userEmail = _AccManager.GetUserByEmail(userInf.Email);
+            var userEmail = _AccManager.GetUserByEmail(userInf.Email); // Assuming User.Identity.Name contains the user's email
 
             ViewBag.userEmail = userEmail.Email;
 
-            if (_AccManager.UpdateUserInformation(userInf, ref ErrorMessage) == ErrorCode.Error)
+            if (profilePicture != null && profilePicture.ContentLength > 0)
             {
-                //
-                ModelState.AddModelError(String.Empty, ErrorMessage);
-                //
-                return View(userInf);
+                // Save the profile picture to the server
+                var fileName = Path.GetFileName(profilePicture.FileName);
+                var serverSavePath = Path.Combine(Server.MapPath("~/UploadedFiles/"), fileName);
+                profilePicture.SaveAs(serverSavePath);
+
+                // Create a new Image object and associate it with the user
+                var user = _AccManager.GetUserInfoByUserId(UserId); // Assuming UserId contains the user's ID
+                var image = new Image { imageFile = fileName, userId = user.id };
+
+                // Add the image to the user's collection of images
+                user.Image.Add(image);
+
+                if (_AccManager.UpdateUserInformation(userInf, ref ErrorMessage) == ErrorCode.Error)
+                {
+                    ModelState.AddModelError(String.Empty, ErrorMessage);
+                    return View(userInf);
+                }
             }
-            TempData["Message"] = $"User Information {ErrorMessage}!";
-            return View(userInf);
+            else
+            {
+                ModelState.AddModelError(String.Empty, "Please select a valid image file.");
+            }
+
+
+            TempData["Message"] = ModelState.IsValid ? "Profile picture updated successfully." : "Failed to update profile picture.";
+            return RedirectToAction("MyProfile"); // Redirect to the MyProfile action to refresh the view
         }
 
         [AllowAnonymous]
@@ -235,12 +257,28 @@ namespace ChurchHub.Controllers
                 return View(intent);
             
         }
+        [AllowAnonymous]
         public ActionResult Schedule()
         {
             return View();
         }
 
-       
+        [Authorize]
+        public ActionResult MyIntentions()
+        {
+            IsUserLoggedSession();
+            var user = _AccManager.GetUserByUserId(UserId);
+            ViewBag.CurrentUserId = user.UserId; // Pass the current user's ID to the view
+            List<Intention> IntentionList = _intentionMgr.GetIntentionsByUserId(user.UserId); // Adjust the method to get intentions by UserId
+            return View(IntentionList);
+        }
+
+
+
+
+
+
+
 
 
 

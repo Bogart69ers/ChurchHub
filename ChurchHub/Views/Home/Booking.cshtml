@@ -6,7 +6,6 @@
 
 
 <!DOCTYPE html>
-<html>
 <head>
     <!-- Site made with Mobirise Website Builder v5.9.17, https://mobirise.com -->
     <meta charset="UTF-8">
@@ -103,90 +102,89 @@
                 </div>
             </div>
         </div>
-        </section>
-        <section data-bs-version="5.1" class="form5 cid-uaGJZG2uUG" id="contact-form-3-uaGJZG2uUG">
+    </section>
+    <section data-bs-version="5.1" class="form5 cid-uaGJZG2uUG" id="contact-form-3-uaGJZG2uUG">
 
 
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 content-head">
-                        <div class="mbr-section-head mb-5">
-                            <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
-                                <strong>Book Your Divine Appointment</strong>
-                            </h3>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 content-head">
+                    <div class="mbr-section-head mb-5">
+                        <h3 class="mbr-section-title mbr-fonts-style align-center mb-0 display-2">
+                            <strong>Book Your Divine Appointment</strong>
+                        </h3>
 
-                        </div>
                     </div>
                 </div>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+            </div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
                 <div class="row justify-content-center">
                     <div class="col-lg-8 mx-auto mbr-form" data-form-type="formoid">
-                        
-                                @if (!String.IsNullOrEmpty(TempData["Message"] as String))
-                                {
-                                    <span class="alert alert-success">@TempData["Message"]</span>
+
+                        @if (!String.IsNullOrEmpty(TempData["Message"] as String))
+                        {
+                            <span class="alert alert-success">@TempData["Message"]</span>
                                     <br /><br /><br />
-                                }
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model.intentionId)
+                        }
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(model => model.intentionId)
 
-                                <div class="form-group" hidden>
-                                    @Html.LabelFor(model => model.userId, htmlAttributes: new { @class = "control-label col-md-2" })
-                                    <div class="col-md-10">
-                                        @Html.EditorFor(model => model.userId, new { htmlAttributes = new { @class = "form-control" } })
-                                        @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
+                        <div class="form-group" hidden>
+                            @Html.LabelFor(model => model.userId, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.userId, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.userId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-                                <input type="hidden" name="email" data-form-email="true" value="sLNzuRYwAWdfQLFK7eZEG7znYFVuCnk1kTYjvVCcCyYJIcOH9IZnJnPbjeNUNBQ/L5d1YZ9VoQZixIlP5dr17/FZZ8DdIMpCn+uRHduVCsA2IyegHtkX7aBNbDHo+WPI">
-                                <div class="row">
-                                    <div hidden="hidden" data-form-alert="" class="alert alert-success col-12">Thanks for filling out the form!</div>
-                                    <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
-                                        Oops...! some problem!
-                                    </div>
-                                </div>
-                                <div class="dragArea row">
-                                    <div class="col-md col-sm-12 form-group mb-3" data-for="name">
-                                        <input type="text" name="offeredby" placeholder="Offered by" data-form-field="name" class="form-control" value="" id="name-contact-form-3-uaGJZG2uUG">
-                                    </div>
-                                    <div class="col-md col-sm-12 form-group mb-3" data-for="url">
-                                        <input type="date" id="intentionDate" name="intentionDate" placeholder="Date of mass intention" data-form-field="url" class="form-control" value="" >
-                                    </div>
-                                    <div class="col-md col-sm-12 form-group mb-3" data-for="massTime">
-                                        <select name="massTime" class="form-control" id="massTime">
-                                        </select>
-                                    </div>
-                                    <div class="col-12 form-group mb-3 mb-3" data-for="type of intention">
-                                        @Html.DropDownList("intentionType", (IEnumerable<SelectListItem>)ViewBag.IntentionType, new { @class = "form-control" })
-                                    </div>
-                                    <div class="col-12 form-group mb-3" data-for="intentionDetails">
-                                        <textarea style="width:850px; height:450px;"name="intentionDetails" placeholder="Details for mass intention" data-form-field="intentionDetails" class="form-control" id="intentionDetails"></textarea>
-                                    </div>
+                        <input type="hidden" name="email" data-form-email="true" value="sLNzuRYwAWdfQLFK7eZEG7znYFVuCnk1kTYjvVCcCyYJIcOH9IZnJnPbjeNUNBQ/L5d1YZ9VoQZixIlP5dr17/FZZ8DdIMpCn+uRHduVCsA2IyegHtkX7aBNbDHo+WPI">
+                        <div class="row">
+                            <div hidden="hidden" data-form-alert="" class="alert alert-success col-12">Thanks for filling out the form!</div>
+                            <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
+                                Oops...! some problem!
+                            </div>
+                        </div>
+                        <div class="dragArea row">
+                            <div class="col-md col-sm-12 form-group mb-3" data-for="name">
+                                <input type="text" name="offeredby" placeholder="Offered by" data-form-field="name" class="form-control" value="" id="name-contact-form-3-uaGJZG2uUG">
+                            </div>
+                            <div class="col-md col-sm-12 form-group mb-3" data-for="url">
+                                <input type="date" id="intentionDate" name="intentionDate" placeholder="Date of mass intention" data-form-field="url" class="form-control" value="">
+                            </div>
+                            <div class="col-md col-sm-12 form-group mb-3" data-for="massTime">
+                                <select name="massTime" class="form-control" id="massTime"></select>
+                            </div>
+                            <div class="col-12 form-group mb-3 mb-3" data-for="type of intention">
+                                @Html.DropDownList("intentionType", (IEnumerable<SelectListItem>)ViewBag.IntentionType, new { @class = "form-control" })
+                            </div>
+                            <div class="col-12 form-group mb-3" data-for="intentionDetails">
+                                <textarea style="width:850px; height:450px;" name="intentionDetails" placeholder="Details for mass intention" data-form-field="intentionDetails" class="form-control" id="intentionDetails"></textarea>
+                            </div>
 
-                                    @Html.HiddenFor(model => model.intentionStatus)
+                            @Html.HiddenFor(model => model.intentionStatus)
 
-                                    <div class="col-lg-12 col-md-12 col-sm-12 align-center mbr-section-btn">
-                                        <button type="submit" class="btn btn-primary display-7">Schedule Now</button>
-                                    </div>
-                                </div>
-                       
-                       
+                            <div class="col-lg-12 col-md-12 col-sm-12 align-center mbr-section-btn">
+                                <button type="submit" class="btn btn-primary display-7">Schedule Now</button>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
-                
-}
-            </div>
-            <script src="/assets/book/bootstrap.bundle.min.js"></script>
-            <script src="/assets/book/smooth-scroll.js"></script>
-            <script src="/assets/book/index.js"></script>
-            <script src="/assets/book/embla.min.js"></script>
-            <script src="/assets/book/script.js"></script>
-            <script src="/assets/book/theme/js/script.js"></script>
-            <script src="/assets/book/formoid.min.js"></script>
-            <script>
+
+            }
+        </div>
+        <script src="/assets/book/bootstrap.bundle.min.js"></script>
+        <script src="/assets/book/smooth-scroll.js"></script>
+        <script src="/assets/book/index.js"></script>
+        <script src="/assets/book/embla.min.js"></script>
+        <script src="/assets/book/script.js"></script>
+        <script src="/assets/book/theme/js/script.js"></script>
+        <script src="/assets/book/formoid.min.js"></script>
+        <script>
                 function updateDropdownOptions() {
                     var intentionDate = new Date(document.getElementById('intentionDate').value);
                     var dropdown = document.getElementById('massTime');
@@ -219,8 +217,7 @@
                 document.getElementById('intentionDate').addEventListener('change', updateDropdownOptions);
 
                 updateDropdownOptions();
-            </script>
+        </script>
 
-            </section>
+    </section>
 </body>
-</html>

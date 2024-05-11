@@ -129,6 +129,78 @@ namespace ChurchHub.Controllers
             }
         }
 
+        [Authorize]
+        public ActionResult Intentions()
+        {
+            IsUserLoggedSession();
+            List<Intention> IntentionList = _intention.GetAll();
+            return View(IntentionList);
+
+        }
+        [Authorize]
+        [HttpPost]
+        public ActionResult AcceptIntentions(int intentionId)
+        {
+            var intention = _intentionMgr.GetIntentionById(intentionId);
+            if (intention != null)
+            {
+                // Update the intention status to "Scheduled" or 2
+                intention.intentionStatus = 1; // Assuming 1 represents "Scheduled"
+                _intentionMgr.UpdateIntention(intention, ref ErrorMessage);
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [Authorize]
+        [HttpPost]
+        public ActionResult CancelIntentions(int intentionId)
+        {
+            var intention = _intentionMgr.GetIntentionById(intentionId);
+            if (intention != null)
+            {
+                // Update the intention status to "Scheduled" or 2
+                intention.intentionStatus = 0; // Assuming 1 represents "Scheduled"
+                _intentionMgr.UpdateIntention(intention, ref ErrorMessage);
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [Authorize]
+        [HttpPost]
+        public ActionResult CompleteIntentions(int intentionId)
+        {
+            var intention = _intentionMgr.GetIntentionById(intentionId);
+            if (intention != null)
+            {
+                // Update the intention status to "Scheduled" or 2
+                intention.intentionStatus = 2; // Assuming 1 represents "Scheduled"
+                _intentionMgr.UpdateIntention(intention, ref ErrorMessage);
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult DeleteIntention(int id)
+        {
+            string errorMsg; // Declare a variable to store the error message
+                             // Logic to delete the item with the provided id
+            var result = _intention.Delete(id, out errorMsg); // Pass an empty string or null as the second argument
+            if (result == ErrorCode.Success)
+            {
+                // Redirect to the AccountManagement action after successful deletion
+                return RedirectToAction("Intentions");
+            }
+            else
+            {
+                // Handle deletion failure
+                TempData["ErrorMessage"] = "Failed to delete item: " + errorMsg; // Display the error message to the user
+                return RedirectToAction("Intentions");
+            }
+        }
+
+
 
 
     }

@@ -10,12 +10,17 @@ namespace ChurchHub.Repository
     {
         private BaseRepository<User_Account> _userAcc;
         private BaseRepository<User_Information> _userInfo;
+        private ChurchHubEntities _dbContext; // Add this field for DbContext
+
 
         public AccountManager()
         {
             _userAcc = new BaseRepository<User_Account>();
             _userInfo = new BaseRepository<User_Information>();
+            _dbContext = new ChurchHubEntities(); // Initialize DbContext
+
         }
+
         public User_Account GetUserById(int Id)
         {
             return _userAcc.Get(Id);
@@ -32,6 +37,7 @@ namespace ChurchHub.Repository
         {
             return _userAcc._table.Where(m => m.Email == email).FirstOrDefault();
         }
+        // CHECKS THE USER IF EXIST 
         public ErrorCode SignIn(String username, String password, ref String errMsg)
         {
             var userSignIn = GetUserByUsername(username);
@@ -51,7 +57,7 @@ namespace ChurchHub.Repository
             errMsg = "Login Successful";
             return ErrorCode.Success;
         }
-
+       
         public ErrorCode SignUp(User_Account userac, ref String errMsg)
         {
             userac.UserId = Utilities.gUid;
@@ -59,12 +65,13 @@ namespace ChurchHub.Repository
             userac.Date_created = DateTime.Now;
             userac.AccountStatus = (Int32)Status.InActive;
 
+            // if the user already exist this will execute
             if (GetUserByUsername(userac.Username) != null)
             {
                 errMsg = "Username Already Exist";
                 return ErrorCode.Error;
             }
-
+            // if the email already exist this will execute
             if (GetUserByEmail(userac.Email) != null)
             {
                 errMsg = "Email Already Exist";
@@ -128,26 +135,22 @@ namespace ChurchHub.Repository
         public User_Account Retrieve(int id, ref String err)
         {
             var User = GetUserById(id);
-            if (User != null)
-                return User;
-
-            User = new User_Account();
-            User.UserId = User.UserId;
-            User.Email = User.Email;
-            User.VerCode = User.VerCode;
-            User.Date_created = User.Date_created;
-            User.Date_modified = DateTime.Now;
-            User.AccountStatus = (Int32)Status.Active;
-
-            var userEmail = User.Email;
-            if (userEmail != null)
-            {
-                User.Email = userEmail;
-            }
-            _userAcc.Create(User, out err);
 
             return GetUserByUserId(User.UserId);
         }
-
+        public User_Information GetUserProfile(int userId)
+        {
+            // Assuming dbContext is your Entity Framework DbContext
+            return _userInfo._table.Include("Image").FirstOrDefault(u => u.id == userId);
+        }
+        public void AddImageToUser(int userId, Image newImage)
+        {
+            var user = _dbContext.Set<User_Information>().FirstOrDefault(u => u.id == userId);
+            if (user != null)
+            {
+                user.Image.Add(newImage);
+                _dbContext.SaveChanges();
+            }
+        }
     }
 }
