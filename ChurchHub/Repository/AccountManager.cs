@@ -125,5 +125,29 @@ namespace ChurchHub.Repository
             return GetUserInfoByUserId(User.UserId);
         }
 
+        public User_Account Retrieve(int id, ref String err)
+        {
+            var User = GetUserById(id);
+            if (User != null)
+                return User;
+
+            User = new User_Account();
+            User.UserId = User.UserId;
+            User.Email = User.Email;
+            User.VerCode = User.VerCode;
+            User.Date_created = User.Date_created;
+            User.Date_modified = DateTime.Now;
+            User.AccountStatus = (Int32)Status.Active;
+
+            var userEmail = User.Email;
+            if (userEmail != null)
+            {
+                User.Email = userEmail;
+            }
+            _userAcc.Create(User, out err);
+
+            return GetUserByUserId(User.UserId);
+        }
+
     }
 }

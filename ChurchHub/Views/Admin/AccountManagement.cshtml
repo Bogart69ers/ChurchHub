@@ -1,0 +1,171 @@
+﻿@model IEnumerable<ChurchHub.User_Account>
+@{
+    ViewBag.Title = "AccountManagement";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div class="card">
+    <h5 class="card-header">Active Accounts</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model.Where(u => u.AccountStatus == 1))
+                {
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.Username)</strong></td>
+                        <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>
+                            @if (item.Role == 1)
+                            {
+                                <span>User</span>
+                            }
+                            else if (item.Role == 2)
+                            {
+                                <span>Admin</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.AccountStatus == 1)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Date_created)</td>
+                         <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="editUser(@item.id)">
+                                        <i class="bx bx-edit-alt me-1"></i>Edit
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete(@item.id)">
+                                        <i class="bx bx-trash me-1"></i>Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<br />
+<br />
+<div class="card">
+    <h5 class="card-header">Inactive Accounts</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Date Created</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="table-border-bottom-0">
+                @foreach (var item in Model.Where(u => u.AccountStatus == 0))
+                {
+                    <tr>
+                        <td><i class="fab fa-angular fa-lg text-danger me-3"></i> <strong>@Html.DisplayFor(modelItem => item.Username)</strong></td>
+                        <td>@Html.DisplayFor(modelItem => item.Password)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>
+                            @if (item.Role == 1)
+                            {
+                                <span>User</span>
+                            }
+                            else if (item.Role == 2)
+                            {
+                                <span>Admin</span>
+                            }
+                        </td>
+                        <td>
+                            @if (item.AccountStatus == 1)
+                            {
+                                <span class="badge bg-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">Inactive</span>
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.Date_created)</td>
+                        <td>
+                            <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="editUser(@item.id)">
+                                        <i class="bx bx-edit-alt me-1"></i>Edit
+                                    </a>
+                                    <a class="dropdown-item" href="javascript:void(0);" onclick="confirmDelete(@item.id)">
+                                        <i class="bx bx-trash me-1"></i>Delete
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<script>
+    function editUser(userId) {
+        // Redirect to the edit action with the user id
+        window.location.href = "/Admin/Edit?id=" + userId;
+    }
+
+    function confirmDelete(userId) {
+        // Show confirmation dialog or perform any action before deleting
+        if (confirm("Are you sure you want to delete this user?")) {
+            // Create a form dynamically
+            var form = document.createElement("form");
+            form.method = "post";
+            form.action = "/Admin/Delete";
+
+            // Create an input field for user id
+            var userIdInput = document.createElement("input");
+            userIdInput.type = "hidden";
+            userIdInput.name = "id";
+            userIdInput.value = userId;
+
+            // Append input field to the form
+            form.appendChild(userIdInput);
+
+            // Append form to the document body
+            document.body.appendChild(form);
+
+            // Submit the form
+            form.submit();
+        }
+    }
+</script>

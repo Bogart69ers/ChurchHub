@@ -64,7 +64,7 @@ namespace ChurchHub.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index");
+                            return RedirectToAction("../Admin/AdminDashboard");
                         }
                     case Constant.Role_User:
                         if(info.FirstName == null)
@@ -163,6 +163,7 @@ namespace ChurchHub.Controllers
 
         }
 
+
         [AllowAnonymous]
         public ActionResult Logout()
         {
@@ -177,7 +178,7 @@ namespace ChurchHub.Controllers
 
             var username = User.Identity.Name;
 
-            var user = _AccManager.CreateOrRetrieve(User.Identity.Name, ref ErrorMessage);
+            var user = _AccManager.CreateOrRetrieve(username, ref ErrorMessage);
 
             var userEmail = _AccManager.GetUserByEmail(user.Email);
 
@@ -238,5 +239,10 @@ namespace ChurchHub.Controllers
         {
             return View();
         }
+
+       
+
+
+
     }
 }

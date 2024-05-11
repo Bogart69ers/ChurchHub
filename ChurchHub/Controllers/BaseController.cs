@@ -12,6 +12,7 @@ namespace ChurchHub.Controllers
         public String ErrorMessage;
         public AccountManager _AccManager;
         public IntentionManager _intentionMgr;
+        public BaseRepository<User_Account> _UserAcc;
 
         public String Username { get { return User.Identity.Name; } }
         public String UserId { get { return _AccManager.GetUserByUsername(Username).UserId; } }
@@ -21,6 +22,7 @@ namespace ChurchHub.Controllers
             ErrorMessage = String.Empty;
             _AccManager = new AccountManager();
             _intentionMgr = new IntentionManager();
+            _UserAcc = new BaseRepository<User_Account>();
         }
 
         public void IsUserLoggedSession()

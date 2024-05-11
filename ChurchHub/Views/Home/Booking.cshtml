@@ -163,7 +163,7 @@
                                         @Html.DropDownList("intentionType", (IEnumerable<SelectListItem>)ViewBag.IntentionType, new { @class = "form-control" })
                                     </div>
                                     <div class="col-12 form-group mb-3" data-for="intentionDetails">
-                                        <textarea name="intentionDetails" placeholder="Details for mass intention" data-form-field="intentionDetails" class="form-control" id="intentionDetails"></textarea>
+                                        <textarea style="width:850px; height:450px;"name="intentionDetails" placeholder="Details for mass intention" data-form-field="intentionDetails" class="form-control" id="intentionDetails"></textarea>
                                     </div>
 
                                     @Html.HiddenFor(model => model.intentionStatus)
@@ -176,58 +176,51 @@
                        
                     </div>
                 </div>
+                
 }
             </div>
+            <script src="/assets/book/bootstrap.bundle.min.js"></script>
+            <script src="/assets/book/smooth-scroll.js"></script>
+            <script src="/assets/book/index.js"></script>
+            <script src="/assets/book/embla.min.js"></script>
+            <script src="/assets/book/script.js"></script>
+            <script src="/assets/book/theme/js/script.js"></script>
+            <script src="/assets/book/formoid.min.js"></script>
+            <script>
+                function updateDropdownOptions() {
+                    var intentionDate = new Date(document.getElementById('intentionDate').value);
+                    var dropdown = document.getElementById('massTime');
+                    dropdown.innerHTML = '';
 
-        </section>
-        <script src="/assets/book/bootstrap.bundle.min.js"></script>
-        <script src="/assets/book/smooth-scroll.js"></script>
-        <script src="/assets/book/index.js"></script>
-        <script src="/assets/book/embla.min.js"></script>
-        <script src="/assets/book/script.js"></script>
-        <script src="/assets/book/theme/js/script.js"></script>
-        <script src="/assets/book/formoid.min.js"></script>
-        <script>
-            function updateDropdownOptions() {
-                var intentionDate = new Date(document.getElementById('intentionDate').value);
-                var dropdown = document.getElementById('massTime');
-                dropdown.innerHTML = ''; 
-
-                if (intentionDate && intentionDate >= new Date())
-                {
-                    if (intentionDate.getDay() === 0) { 
-                        addOption(dropdown, '05:30 AM', '5:30 AM');
-                        addOption(dropdown, '08:00 AM', '8:00 AM');
-                        addOption(dropdown, '09:30 AM', '9:30 AM');
-                        addOption(dropdown, '04:00 PM', '4:00 PM');
-                        addOption(dropdown, '05:30 PM', '5:30 PM');
-                        addOption(dropdown, '07:00 PM', '7:00 PM');
+                    if (intentionDate && intentionDate >= new Date()) {
+                        if (intentionDate.getDay() === 0) {
+                            addOption(dropdown, '05:30 AM', '5:30 AM');
+                            addOption(dropdown, '08:00 AM', '8:00 AM');
+                            addOption(dropdown, '09:30 AM', '9:30 AM');
+                            addOption(dropdown, '04:00 PM', '4:00 PM');
+                            addOption(dropdown, '05:30 PM', '5:30 PM');
+                            addOption(dropdown, '07:00 PM', '7:00 PM');
+                        } else {
+                            addOption(dropdown, '05:00 AM', '5:00 AM');
+                            addOption(dropdown, '05:30 PM', '5:30 PM');
+                        }
+                    } else {
+                        dropdown.disabled = false;
                     }
-                    else
-                    {
-                        addOption(dropdown, '05:00 AM', '5:00 AM');
-                        addOption(dropdown, '05:30 PM', '5:30 PM');
-                    }
-
                 }
-                else
-                {
-                    dropdown.disabled = false;
+
+                function addOption(select, value, text) {
+                    var option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = text;
+                    select.appendChild(option);
                 }
-            }
 
-            if(selectedService)
-            function addOption(select, value, text) {
-                var option = document.createElement('option');
-                option.value = value;
-                option.textContent = text;
-                select.appendChild(option);
-            }
+                document.getElementById('intentionDate').addEventListener('change', updateDropdownOptions);
 
-            document.getElementById('intentionDate').addEventListener('change', updateDropdownOptions);
+                updateDropdownOptions();
+            </script>
 
-            updateDropdownOptions();
-        </script>
-
+            </section>
 </body>
 </html>

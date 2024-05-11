@@ -1,0 +1,57 @@
+﻿@model ChurchHub.User_Account
+
+@{
+    ViewBag.Title = "AdminCreateAccount";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+
+    <!-- Basic Layout -->
+    <div class="row">
+        <div class="col-xl">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Create Account</h5>
+                    <small class="text-muted float-end">Default label</small>
+                </div>
+                <div class="card-body">
+                    <form>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="text" class="form-control" name="email" value="" placeholder="Email" required />
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text" class="form-control" name="username" value="" placeholder="Username" required />
+                            @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="text" class="form-control" name="password" value="" placeholder="Password" required />
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="text" class="form-control" name="ConfirmPass" value="" placeholder="Confirm Password" required />
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            @Html.DropDownList("Role", (IEnumerable<SelectListItem>)ViewBag.Role, new { @class = "form-control" })
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}

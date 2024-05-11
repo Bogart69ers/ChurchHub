@@ -25,36 +25,7 @@
                     <div class="dragArea row">
                         @if (User.Identity.IsAuthenticated)
                         {
-                            if (User.IsInRole("Admin"))
-                            {
-                                <div class="col-12 form-group mb-3 mb-3">
-                                    <input type="text" class="form-control" name="email" value="" placeholder="Email" required />
-                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                                </div>
 
-                                <div class="col-md col-sm-12 form-group mb-3 mb-3">
-                                    <input type="text" class="form-control" name="username" value="" placeholder="Username" required />
-                                    @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-12 form-group mb-3 mb-3">
-                                    <input type="text" class="form-control" name="password" value="" placeholder="Password" required />
-                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-12 form-group mb-3 mb-3">
-                                    <input type="text" class="form-control" name="ConfirmPass" value="" placeholder="Confirm Password" required />
-                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="col-12 form-group mb-3 mb-3">
-                                    @Html.DropDownList("Role", (IEnumerable<SelectListItem>)ViewBag.Role, new { @class = "form-control" })
-                                </div>
-
-
-                            }
-                            else if (User.IsInRole("User"))
-                            {
                                 <div class="col-12 form-group mb-3 mb-3">
                                     <input type="text" class="form-control" name="email" value="" placeholder="Email" required />
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
@@ -74,7 +45,7 @@
                                     <input type="text" class="form-control" name="ConfirmPass" value="" placeholder="Confirm Password" required />
                                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                 </div>                                
-                            }
+                            
                         }
                         else
                         {
