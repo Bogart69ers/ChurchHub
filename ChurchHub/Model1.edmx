@@ -19,12 +19,14 @@
           </Key>
           <Property Name="intentionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userId" Type="nvarchar(max)" />
+          <Property Name="intentionGUID" Type="nvarchar(max)" />
           <Property Name="offeredBy" Type="nvarchar" MaxLength="255" />
           <Property Name="intentionType" Type="int" />
           <Property Name="intentionDate" Type="date" />
           <Property Name="massTime" Type="nvarchar" MaxLength="50" />
           <Property Name="intentionDetails" Type="nvarchar(max)" />
           <Property Name="intentionStatus" Type="int" />
+          <Property Name="paymentId" Type="int" />
         </EntityType>
         <EntityType Name="IntentionCategory">
           <Key>
@@ -33,30 +35,21 @@
           <Property Name="intentionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="intentionName" Type="nvarchar" MaxLength="255" />
         </EntityType>
-        <EntityType Name="IntentionDetail">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="intentionId" Type="int" />
-          <Property Name="paymentId" Type="int" />
-        </EntityType>
         <EntityType Name="Payment">
           <Key>
-            <PropertyRef Name="PaymentID" />
+            <PropertyRef Name="paymentId" />
           </Key>
-          <Property Name="PaymentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BookingID" Type="int" />
-          <Property Name="PaymentMethod" Type="nvarchar" MaxLength="100" />
-          <Property Name="Amount" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="paymentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="nvarchar" MaxLength="255" />
           <Property Name="PaymentDate" Type="date" />
-          <Property Name="PaymentStatus" Type="nvarchar" MaxLength="50" />
+          <Property Name="PaymentStatus" Type="int" />
+          <Property Name="intentionId" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Report">
           <Key>
             <PropertyRef Name="ReportID" />
           </Key>
-          <Property Name="ReportID" Type="int" Nullable="false" />
+          <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ScheduleType" Type="int" />
           <Property Name="Amount" Type="int" />
           <Property Name="Date_Time" Type="datetime" />
@@ -110,6 +103,17 @@
           <Property Name="Status" Type="int" />
         </EntityType>
         <!--Errors Found During Generation:
+warning 6002: The table/view 'ChurchConnect.dbo.vw_Reports' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_Reports">
+          <Key>
+            <PropertyRef Name="intentionId" />
+          </Key>
+          <Property Name="intentionName" Type="nvarchar" MaxLength="255" />
+          <Property Name="TotalAmount" Type="decimal" Precision="38" Scale="2" />
+          <Property Name="PaymentCount" Type="int" />
+          <Property Name="intentionId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
 warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vw_role">
           <Key>
@@ -131,7 +135,7 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Intention_ScheduleType">
+        <Association Name="FK_Intention_IntentionCategory">
           <End Role="IntentionCategory" Type="Self.IntentionCategory" Multiplicity="0..1" />
           <End Role="Intention" Type="Self.Intention" Multiplicity="*" />
           <ReferentialConstraint>
@@ -143,15 +147,17 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_IntentionDetail_IntentionDetail">
-          <End Role="IntentionDetail" Type="Self.IntentionDetail" Multiplicity="1" />
-          <End Role="IntentionDetail1" Type="Self.IntentionDetail" Multiplicity="0..1" />
+        <Association Name="FK_Intention_Payment">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Intention" Type="Self.Intention" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="IntentionDetail">
-              <PropertyRef Name="id" />
+            <Principal Role="Payment">
+              <PropertyRef Name="paymentId" />
             </Principal>
-            <Dependent Role="IntentionDetail1">
-              <PropertyRef Name="id" />
+            <Dependent Role="Intention">
+              <PropertyRef Name="paymentId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -226,13 +232,20 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Intention" EntityType="Self.Intention" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IntentionCategory" EntityType="Self.IntentionCategory" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="IntentionDetail" EntityType="Self.IntentionDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Payment" EntityType="Self.Payment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Account" EntityType="Self.User_Account" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User_Information" EntityType="Self.User_Information" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="vw_Reports" EntityType="Self.vw_Reports" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vw_Reports].[intentionName] AS [intentionName], 
+    [vw_Reports].[TotalAmount] AS [TotalAmount], 
+    [vw_Reports].[PaymentCount] AS [PaymentCount], 
+    [vw_Reports].[intentionId] AS [intentionId]
+    FROM [dbo].[vw_Reports] AS [vw_Reports]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="vw_role" EntityType="Self.vw_role" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vw_role].[id] AS [id], 
@@ -244,13 +257,13 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
             <End Role="User_Information" EntitySet="User_Information" />
             <End Role="Image" EntitySet="Image" />
           </AssociationSet>
-          <AssociationSet Name="FK_Intention_ScheduleType" Association="Self.FK_Intention_ScheduleType">
+          <AssociationSet Name="FK_Intention_IntentionCategory" Association="Self.FK_Intention_IntentionCategory">
             <End Role="IntentionCategory" EntitySet="IntentionCategory" />
             <End Role="Intention" EntitySet="Intention" />
           </AssociationSet>
-          <AssociationSet Name="FK_IntentionDetail_IntentionDetail" Association="Self.FK_IntentionDetail_IntentionDetail">
-            <End Role="IntentionDetail" EntitySet="IntentionDetail" />
-            <End Role="IntentionDetail1" EntitySet="IntentionDetail" />
+          <AssociationSet Name="FK_Intention_Payment" Association="Self.FK_Intention_Payment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="Intention" EntitySet="Intention" />
           </AssociationSet>
           <AssociationSet Name="FK_User_Account_User_Account" Association="Self.FK_User_Account_User_Account">
             <End Role="User_Account" EntitySet="User_Account" />
@@ -265,7 +278,214 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ChurchConnectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="ChurchHubEntities" annotation:LazyLoadingEnabled="true">
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="Int32" />
+          <Property Name="imageFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_Information" Relationship="Self.FK_Image_User_Information" FromRole="Image" ToRole="User_Information" />
+        </EntityType>
+        <EntityType Name="Intention">
+          <Key>
+            <PropertyRef Name="intentionId" />
+          </Key>
+          <Property Name="intentionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="intentionGUID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="offeredBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="intentionType" Type="Int32" />
+          <Property Name="intentionDate" Type="DateTime" Precision="0" />
+          <Property Name="massTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="intentionDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="intentionStatus" Type="Int32" />
+          <Property Name="paymentId" Type="Int32" />
+          <NavigationProperty Name="IntentionCategory" Relationship="Self.FK_Intention_IntentionCategory" FromRole="Intention" ToRole="IntentionCategory" />
+          <NavigationProperty Name="Payment" Relationship="Self.FK_Intention_Payment" FromRole="Intention" ToRole="Payment" />
+        </EntityType>
+        <EntityType Name="IntentionCategory">
+          <Key>
+            <PropertyRef Name="intentionId" />
+          </Key>
+          <Property Name="intentionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="intentionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Intention" Relationship="Self.FK_Intention_IntentionCategory" FromRole="IntentionCategory" ToRole="Intention" />
+        </EntityType>
+        <EntityType Name="Payment">
+          <Key>
+            <PropertyRef Name="paymentId" />
+          </Key>
+          <Property Name="paymentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="PaymentDate" Type="DateTime" Precision="0" />
+          <Property Name="PaymentStatus" Type="Int32" />
+          <Property Name="intentionId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Intention" Relationship="Self.FK_Intention_Payment" FromRole="Payment" ToRole="Intention" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportID" />
+          </Key>
+          <Property Name="ReportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ScheduleType" Type="Int32" />
+          <Property Name="Amount" Type="Int32" />
+          <Property Name="Date_Time" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="roleId" />
+          </Key>
+          <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User_Account" Relationship="Self.FK_User_Account_User_Account1" FromRole="Role" ToRole="User_Account" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="User_Account">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AccountStatus" Type="Int32" />
+          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Role" Type="Int32" />
+          <Property Name="VerCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Date_created" Type="DateTime" Precision="3" />
+          <Property Name="Date_modified" Type="DateTime" Precision="3" />
+          <Property Name="CreatedBy" Type="Int32" />
+          <NavigationProperty Name="Role1" Relationship="Self.FK_User_Account_User_Account1" FromRole="User_Account" ToRole="Role" />
+          <NavigationProperty Name="User_Account1" Relationship="Self.FK_User_Account_User_Account" FromRole="User_Account" ToRole="User_Account1" />
+          <NavigationProperty Name="User_Account2" Relationship="Self.FK_User_Account_User_Account" FromRole="User_Account1" ToRole="User_Account" />
+        </EntityType>
+        <EntityType Name="User_Information">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="userId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Zip_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="Image" Relationship="Self.FK_Image_User_Information" FromRole="User_Information" ToRole="Image" />
+        </EntityType>
+        <EntityType Name="vw_role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Image_User_Information">
+          <End Role="User_Information" Type="Self.User_Information" Multiplicity="0..1" />
+          <End Role="Image" Type="Self.Image" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Information">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Image">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Intention_IntentionCategory">
+          <End Role="IntentionCategory" Type="Self.IntentionCategory" Multiplicity="0..1" />
+          <End Role="Intention" Type="Self.Intention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IntentionCategory">
+              <PropertyRef Name="intentionId" />
+            </Principal>
+            <Dependent Role="Intention">
+              <PropertyRef Name="intentionType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Intention_Payment">
+          <End Role="Payment" Type="Self.Payment" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Intention" Type="Self.Intention" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Payment">
+              <PropertyRef Name="paymentId" />
+            </Principal>
+            <Dependent Role="Intention">
+              <PropertyRef Name="paymentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account_User_Account1">
+          <End Role="Role" Type="Self.Role" Multiplicity="0..1" />
+          <End Role="User_Account" Type="Self.User_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="roleId" />
+            </Principal>
+            <Dependent Role="User_Account">
+              <PropertyRef Name="Role" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_User_Account_User_Account">
+          <End Role="User_Account" Type="Self.User_Account" Multiplicity="0..1" />
+          <End Role="User_Account1" Type="Self.User_Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User_Account">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="User_Account1">
+              <PropertyRef Name="CreatedBy" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ChurchConnectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Image" EntityType="Self.Image" />
+          <EntitySet Name="Intention" EntityType="Self.Intention" />
+          <EntitySet Name="IntentionCategory" EntityType="Self.IntentionCategory" />
+          <EntitySet Name="Payment" EntityType="Self.Payment" />
+          <EntitySet Name="Report" EntityType="Self.Report" />
+          <EntitySet Name="Role" EntityType="Self.Role" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="User_Account" EntityType="Self.User_Account" />
+          <EntitySet Name="User_Information" EntityType="Self.User_Information" />
+          <EntitySet Name="vw_role" EntityType="Self.vw_role" />
+          <AssociationSet Name="FK_Image_User_Information" Association="Self.FK_Image_User_Information">
+            <End Role="User_Information" EntitySet="User_Information" />
+            <End Role="Image" EntitySet="Image" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Intention_IntentionCategory" Association="Self.FK_Intention_IntentionCategory">
+            <End Role="IntentionCategory" EntitySet="IntentionCategory" />
+            <End Role="Intention" EntitySet="Intention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Intention_Payment" Association="Self.FK_Intention_Payment">
+            <End Role="Payment" EntitySet="Payment" />
+            <End Role="Intention" EntitySet="Intention" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Account_User_Account1" Association="Self.FK_User_Account_User_Account1">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="User_Account" EntitySet="User_Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_User_Account_User_Account" Association="Self.FK_User_Account_User_Account">
+            <End Role="User_Account" EntitySet="User_Account" />
+            <End Role="User_Account1" EntitySet="User_Account" />
+          </AssociationSet>
           <FunctionImport Name="sp_alterdiagram">
             <Parameter Name="diagramname" Mode="In" Type="String" />
             <Parameter Name="owner_id" Mode="In" Type="Int32" />
@@ -308,38 +528,8 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
             <Parameter Name="AccountStatus" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="sp_upgraddiagrams" />
-          <EntitySet Name="Image" EntityType="ChurchConnectModel.Image" />
-          <EntitySet Name="Intention" EntityType="ChurchConnectModel.Intention" />
-          <EntitySet Name="IntentionCategory" EntityType="ChurchConnectModel.IntentionCategory" />
-          <EntitySet Name="IntentionDetail" EntityType="ChurchConnectModel.IntentionDetail" />
-          <EntitySet Name="Payment" EntityType="ChurchConnectModel.Payment" />
-          <EntitySet Name="Report" EntityType="ChurchConnectModel.Report" />
-          <EntitySet Name="Role" EntityType="ChurchConnectModel.Role" />
-          <EntitySet Name="sysdiagrams" EntityType="ChurchConnectModel.sysdiagrams" />
-          <EntitySet Name="User_Account" EntityType="ChurchConnectModel.User_Account" />
-          <EntitySet Name="User_Information" EntityType="ChurchConnectModel.User_Information" />
-          <EntitySet Name="vw_role" EntityType="ChurchConnectModel.vw_role" />
-          <AssociationSet Name="FK_Image_User_Information" Association="ChurchConnectModel.FK_Image_User_Information">
-            <End Role="User_Information" EntitySet="User_Information" />
-            <End Role="Image" EntitySet="Image" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Intention_ScheduleType" Association="ChurchConnectModel.FK_Intention_ScheduleType">
-            <End Role="IntentionCategory" EntitySet="IntentionCategory" />
-            <End Role="Intention" EntitySet="Intention" />
-          </AssociationSet>
-          <AssociationSet Name="FK_IntentionDetail_IntentionDetail" Association="ChurchConnectModel.FK_IntentionDetail_IntentionDetail">
-            <End Role="IntentionDetail" EntitySet="IntentionDetail" />
-            <End Role="IntentionDetail1" EntitySet="IntentionDetail" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_Account_User_Account1" Association="ChurchConnectModel.FK_User_Account_User_Account1">
-            <End Role="Role" EntitySet="Role" />
-            <End Role="User_Account" EntitySet="User_Account" />
-          </AssociationSet>
-          <AssociationSet Name="FK_User_Account_User_Account" Association="ChurchConnectModel.FK_User_Account_User_Account">
-            <End Role="User_Account" EntitySet="User_Account" />
-            <End Role="User_Account1" EntitySet="User_Account" />
-          </AssociationSet>
-          </EntityContainer>
+          <EntitySet Name="vw_Reports" EntityType="ChurchConnectModel.vw_Reports" />
+        </EntityContainer>
         <ComplexType Name="sp_helpdiagramdefinition_Result">
           <Property Type="Int32" Name="version" Nullable="true" />
           <Property Type="Binary" Name="definition" Nullable="true" />
@@ -351,194 +541,136 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
           <Property Type="Int32" Name="OwnerID" Nullable="false" />
         </ComplexType>
-        <EntityType Name="Image">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userId" Type="Int32" />
-          <Property Name="imageFile" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_Information" Relationship="ChurchConnectModel.FK_Image_User_Information" FromRole="Image" ToRole="User_Information" />
-        </EntityType>
-        <EntityType Name="Intention">
+        <EntityType Name="vw_Reports">
           <Key>
             <PropertyRef Name="intentionId" />
           </Key>
-          <Property Name="intentionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="offeredBy" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="intentionType" Type="Int32" />
-          <Property Name="intentionDate" Type="DateTime" Precision="0" />
-          <Property Name="massTime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="intentionDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="intentionStatus" Type="Int32" />
-          <NavigationProperty Name="IntentionCategory" Relationship="ChurchConnectModel.FK_Intention_ScheduleType" FromRole="Intention" ToRole="IntentionCategory" />
-        </EntityType>
-        <EntityType Name="IntentionCategory">
-          <Key>
-            <PropertyRef Name="intentionId" />
-          </Key>
-          <Property Name="intentionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="intentionName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Intention" Relationship="ChurchConnectModel.FK_Intention_ScheduleType" FromRole="IntentionCategory" ToRole="Intention" />
+          <Property Name="TotalAmount" Type="Decimal" Precision="38" Scale="2" />
+          <Property Name="PaymentCount" Type="Int32" />
+          <Property Name="intentionId" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityType Name="IntentionDetail">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="intentionId" Type="Int32" />
-          <Property Name="paymentId" Type="Int32" />
-          <NavigationProperty Name="IntentionDetail1" Relationship="ChurchConnectModel.FK_IntentionDetail_IntentionDetail" FromRole="IntentionDetail" ToRole="IntentionDetail1" />
-          <NavigationProperty Name="IntentionDetail2" Relationship="ChurchConnectModel.FK_IntentionDetail_IntentionDetail" FromRole="IntentionDetail1" ToRole="IntentionDetail" />
-        </EntityType>
-        <EntityType Name="Payment">
-          <Key>
-            <PropertyRef Name="PaymentID" />
-          </Key>
-          <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BookingID" Type="Int32" />
-          <Property Name="PaymentMethod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Amount" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="PaymentDate" Type="DateTime" Precision="0" />
-          <Property Name="PaymentStatus" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="Report">
-          <Key>
-            <PropertyRef Name="ReportID" />
-          </Key>
-          <Property Name="ReportID" Type="Int32" Nullable="false" />
-          <Property Name="ScheduleType" Type="Int32" />
-          <Property Name="Amount" Type="Int32" />
-          <Property Name="Date_Time" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="roleId" />
-          </Key>
-          <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User_Account" Relationship="ChurchConnectModel.FK_User_Account_User_Account1" FromRole="Role" ToRole="User_Account" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
-        <EntityType Name="User_Account">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="AccountStatus" Type="Int32" />
-          <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Role" Type="Int32" />
-          <Property Name="VerCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Date_created" Type="DateTime" Precision="3" />
-          <Property Name="Date_modified" Type="DateTime" Precision="3" />
-          <Property Name="CreatedBy" Type="Int32" />
-          <NavigationProperty Name="Role1" Relationship="ChurchConnectModel.FK_User_Account_User_Account1" FromRole="User_Account" ToRole="Role" />
-          <NavigationProperty Name="User_Account1" Relationship="ChurchConnectModel.FK_User_Account_User_Account" FromRole="User_Account" ToRole="User_Account1" />
-          <NavigationProperty Name="User_Account2" Relationship="ChurchConnectModel.FK_User_Account_User_Account" FromRole="User_Account1" ToRole="User_Account" />
-        </EntityType>
-        <EntityType Name="User_Information">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="userId" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="State" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Zip_code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="Status" Type="Int32" />
-          <NavigationProperty Name="Image" Relationship="ChurchConnectModel.FK_Image_User_Information" FromRole="User_Information" ToRole="Image" />
-        </EntityType>
-        <EntityType Name="vw_role">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="roleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_Image_User_Information">
-          <End Type="ChurchConnectModel.User_Information" Role="User_Information" Multiplicity="0..1" />
-          <End Type="ChurchConnectModel.Image" Role="Image" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_Information">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Image">
-              <PropertyRef Name="userId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Intention_ScheduleType">
-          <End Type="ChurchConnectModel.IntentionCategory" Role="IntentionCategory" Multiplicity="0..1" />
-          <End Type="ChurchConnectModel.Intention" Role="Intention" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="IntentionCategory">
-              <PropertyRef Name="intentionId" />
-            </Principal>
-            <Dependent Role="Intention">
-              <PropertyRef Name="intentionType" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_IntentionDetail_IntentionDetail">
-          <End Type="ChurchConnectModel.IntentionDetail" Role="IntentionDetail" Multiplicity="1" />
-          <End Type="ChurchConnectModel.IntentionDetail" Role="IntentionDetail1" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="IntentionDetail">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="IntentionDetail1">
-              <PropertyRef Name="id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_Account_User_Account1">
-          <End Type="ChurchConnectModel.Role" Role="Role" Multiplicity="0..1" />
-          <End Type="ChurchConnectModel.User_Account" Role="User_Account" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Role">
-              <PropertyRef Name="roleId" />
-            </Principal>
-            <Dependent Role="User_Account">
-              <PropertyRef Name="Role" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_User_Account_User_Account">
-          <End Type="ChurchConnectModel.User_Account" Role="User_Account" Multiplicity="0..1" />
-          <End Type="ChurchConnectModel.User_Account" Role="User_Account1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User_Account">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="User_Account1">
-              <PropertyRef Name="CreatedBy" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        </Schema>
+      </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ChurchConnectModelStoreContainer" CdmEntityContainer="ChurchHubEntities">
+        <EntityContainerMapping StorageEntityContainer="ChurchConnectModelStoreContainer" CdmEntityContainer="ChurchConnectEntities">
+          <EntitySetMapping Name="Image">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Image">
+              <MappingFragment StoreEntitySet="Image">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="imageFile" ColumnName="imageFile" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Intention">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Intention">
+              <MappingFragment StoreEntitySet="Intention">
+                <ScalarProperty Name="intentionId" ColumnName="intentionId" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="intentionGUID" ColumnName="intentionGUID" />
+                <ScalarProperty Name="offeredBy" ColumnName="offeredBy" />
+                <ScalarProperty Name="intentionType" ColumnName="intentionType" />
+                <ScalarProperty Name="intentionDate" ColumnName="intentionDate" />
+                <ScalarProperty Name="massTime" ColumnName="massTime" />
+                <ScalarProperty Name="intentionDetails" ColumnName="intentionDetails" />
+                <ScalarProperty Name="intentionStatus" ColumnName="intentionStatus" />
+                <ScalarProperty Name="paymentId" ColumnName="paymentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IntentionCategory">
+            <EntityTypeMapping TypeName="ChurchConnectModel.IntentionCategory">
+              <MappingFragment StoreEntitySet="IntentionCategory">
+                <ScalarProperty Name="intentionId" ColumnName="intentionId" />
+                <ScalarProperty Name="intentionName" ColumnName="intentionName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Payment">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Payment">
+              <MappingFragment StoreEntitySet="Payment">
+                <ScalarProperty Name="paymentId" ColumnName="paymentId" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
+                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
+                <ScalarProperty Name="intentionId" ColumnName="intentionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Report">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="ReportID" ColumnName="ReportID" />
+                <ScalarProperty Name="ScheduleType" ColumnName="ScheduleType" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="Date_Time" ColumnName="Date_Time" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Role">
+            <EntityTypeMapping TypeName="ChurchConnectModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="roleId" ColumnName="roleId" />
+                <ScalarProperty Name="roleName" ColumnName="roleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ChurchConnectModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Account">
+            <EntityTypeMapping TypeName="ChurchConnectModel.User_Account">
+              <MappingFragment StoreEntitySet="User_Account">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="AccountStatus" ColumnName="AccountStatus" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="VerCode" ColumnName="VerCode" />
+                <ScalarProperty Name="Date_created" ColumnName="Date_created" />
+                <ScalarProperty Name="Date_modified" ColumnName="Date_modified" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User_Information">
+            <EntityTypeMapping TypeName="ChurchConnectModel.User_Information">
+              <MappingFragment StoreEntitySet="User_Information">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip_code" ColumnName="Zip_code" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_role">
+            <EntityTypeMapping TypeName="ChurchConnectModel.vw_role">
+              <MappingFragment StoreEntitySet="vw_role">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="roleName" ColumnName="roleName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="ChurchConnectModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="ChurchConnectModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="ChurchConnectModel.Store.sp_dropdiagram" />
@@ -565,130 +697,17 @@ warning 6002: The table/view 'ChurchConnect.dbo.vw_role' does not have a primary
           <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="ChurchConnectModel.Store.sp_renamediagram" />
           <FunctionImportMapping FunctionImportName="sp_updateRole" FunctionName="ChurchConnectModel.Store.sp_updateRole" />
           <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="ChurchConnectModel.Store.sp_upgraddiagrams" />
-          <EntitySetMapping Name="Image">
-            <EntityTypeMapping TypeName="ChurchConnectModel.Image">
-              <MappingFragment StoreEntitySet="Image">
-                <ScalarProperty Name="imageFile" ColumnName="imageFile" />
-                <ScalarProperty Name="userId" ColumnName="userId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Intention">
-            <EntityTypeMapping TypeName="ChurchConnectModel.Intention">
-              <MappingFragment StoreEntitySet="Intention">
-                <ScalarProperty Name="intentionStatus" ColumnName="intentionStatus" />
-                <ScalarProperty Name="intentionDetails" ColumnName="intentionDetails" />
-                <ScalarProperty Name="massTime" ColumnName="massTime" />
-                <ScalarProperty Name="intentionDate" ColumnName="intentionDate" />
-                <ScalarProperty Name="intentionType" ColumnName="intentionType" />
-                <ScalarProperty Name="offeredBy" ColumnName="offeredBy" />
-                <ScalarProperty Name="userId" ColumnName="userId" />
+          <EntitySetMapping Name="vw_Reports">
+            <EntityTypeMapping TypeName="ChurchConnectModel.vw_Reports">
+              <MappingFragment StoreEntitySet="vw_Reports">
                 <ScalarProperty Name="intentionId" ColumnName="intentionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="IntentionCategory">
-            <EntityTypeMapping TypeName="ChurchConnectModel.IntentionCategory">
-              <MappingFragment StoreEntitySet="IntentionCategory">
+                <ScalarProperty Name="PaymentCount" ColumnName="PaymentCount" />
+                <ScalarProperty Name="TotalAmount" ColumnName="TotalAmount" />
                 <ScalarProperty Name="intentionName" ColumnName="intentionName" />
-                <ScalarProperty Name="intentionId" ColumnName="intentionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="IntentionDetail">
-            <EntityTypeMapping TypeName="ChurchConnectModel.IntentionDetail">
-              <MappingFragment StoreEntitySet="IntentionDetail">
-                <ScalarProperty Name="paymentId" ColumnName="paymentId" />
-                <ScalarProperty Name="intentionId" ColumnName="intentionId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Payment">
-            <EntityTypeMapping TypeName="ChurchConnectModel.Payment">
-              <MappingFragment StoreEntitySet="Payment">
-                <ScalarProperty Name="PaymentStatus" ColumnName="PaymentStatus" />
-                <ScalarProperty Name="PaymentDate" ColumnName="PaymentDate" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="PaymentMethod" ColumnName="PaymentMethod" />
-                <ScalarProperty Name="BookingID" ColumnName="BookingID" />
-                <ScalarProperty Name="PaymentID" ColumnName="PaymentID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Report">
-            <EntityTypeMapping TypeName="ChurchConnectModel.Report">
-              <MappingFragment StoreEntitySet="Report">
-                <ScalarProperty Name="Date_Time" ColumnName="Date_Time" />
-                <ScalarProperty Name="Amount" ColumnName="Amount" />
-                <ScalarProperty Name="ScheduleType" ColumnName="ScheduleType" />
-                <ScalarProperty Name="ReportID" ColumnName="ReportID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Role">
-            <EntityTypeMapping TypeName="ChurchConnectModel.Role">
-              <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="roleName" ColumnName="roleName" />
-                <ScalarProperty Name="roleId" ColumnName="roleId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="ChurchConnectModel.sysdiagrams">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User_Account">
-            <EntityTypeMapping TypeName="ChurchConnectModel.User_Account">
-              <MappingFragment StoreEntitySet="User_Account">
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="Date_modified" ColumnName="Date_modified" />
-                <ScalarProperty Name="Date_created" ColumnName="Date_created" />
-                <ScalarProperty Name="VerCode" ColumnName="VerCode" />
-                <ScalarProperty Name="Role" ColumnName="Role" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="AccountStatus" ColumnName="AccountStatus" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="User_Information">
-            <EntityTypeMapping TypeName="ChurchConnectModel.User_Information">
-              <MappingFragment StoreEntitySet="User_Information">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="Zip_code" ColumnName="Zip_code" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="userId" ColumnName="userId" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vw_role">
-            <EntityTypeMapping TypeName="ChurchConnectModel.vw_role">
-              <MappingFragment StoreEntitySet="vw_role">
-                <ScalarProperty Name="roleName" ColumnName="roleName" />
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

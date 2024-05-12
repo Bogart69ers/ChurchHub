@@ -12,13 +12,11 @@ namespace ChurchHub
     using System;
     using System.Collections.Generic;
     
-    public partial class IntentionDetail
+    public partial class vw_Reports
     {
-        public int id { get; set; }
-        public Nullable<int> intentionId { get; set; }
-        public Nullable<int> paymentId { get; set; }
-    
-        public virtual IntentionDetail IntentionDetail1 { get; set; }
-        public virtual IntentionDetail IntentionDetail2 { get; set; }
+        public string intentionName { get; set; }
+        public Nullable<decimal> TotalAmount { get; set; }
+        public Nullable<int> PaymentCount { get; set; }
+        public int intentionId { get; set; }
     }
 }

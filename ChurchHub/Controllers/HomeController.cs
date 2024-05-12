@@ -238,6 +238,7 @@ namespace ChurchHub.Controllers
             ViewBag.IntentionType = Utilities.ListCategory;
             return View();
         }
+
         [HttpPost]
         public ActionResult Booking(Intention intent)
         {
@@ -251,12 +252,13 @@ namespace ChurchHub.Controllers
                 ViewBag.IntentionType = Utilities.ListCategory;
                 return View(intent);
             }
-                         
-                // If the model state is not valid, return the view with validation errors
-                ViewBag.IntentionType = Utilities.ListCategory;
-                return View(intent);
-            
+
+            // Redirect to the Payment action with the newly created intention's GUID
+            return RedirectToAction("Payment", new { intentionGUID = intent.intentionGUID });
         }
+
+
+
         [AllowAnonymous]
         public ActionResult Schedule()
         {
@@ -273,14 +275,42 @@ namespace ChurchHub.Controllers
             return View(IntentionList);
         }
 
+        [Authorize]
+        public ActionResult Payment(string intentionGUID)
+        {
+            // Pass intentionGUID to the view for reference
+            ViewBag.IntentionGUID = intentionGUID;
 
+            return View();
+        }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Payment(Payment payment, string intentionGUID)
+        {
+            if (ModelState.IsValid)
+            {
+                // Create an instance of PaymentManager
+                var paymentManager = new PaymentManager();
 
+                // Call the CreatePayment method to handle payment creation
+                var resultCode = paymentManager.CreatePayment(payment, intentionGUID, ref ErrorMessage);
 
+                if (resultCode == ErrorCode.Success)
+                {
+                    // Redirect to the booking page with the intention GUID
+                    return RedirectToAction("Booking", new { intentionGUID });
+                }
+                else
+                {
+                    // Handle the case where payment creation fails
+                    ModelState.AddModelError(string.Empty, ErrorMessage);
+                }
+            }
 
-
-
-
-
+            // If model state is not valid, return to payment view with errors
+            return View(payment);
+        }
     }
 }

@@ -15,10 +15,10 @@ namespace ChurchHub
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class ChurchHubEntities : DbContext
+    public partial class ChurchConnectEntities : DbContext
     {
-        public ChurchHubEntities()
-            : base("name=ChurchHubEntities")
+        public ChurchConnectEntities()
+            : base("name=ChurchConnectEntities")
         {
         }
     
@@ -30,7 +30,6 @@ namespace ChurchHub
         public virtual DbSet<Image> Image { get; set; }
         public virtual DbSet<Intention> Intention { get; set; }
         public virtual DbSet<IntentionCategory> IntentionCategory { get; set; }
-        public virtual DbSet<IntentionDetail> IntentionDetail { get; set; }
         public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<Report> Report { get; set; }
         public virtual DbSet<Role> Role { get; set; }
@@ -38,6 +37,7 @@ namespace ChurchHub
         public virtual DbSet<User_Account> User_Account { get; set; }
         public virtual DbSet<User_Information> User_Information { get; set; }
         public virtual DbSet<vw_role> vw_role { get; set; }
+        public virtual DbSet<vw_Reports> vw_Reports { get; set; }
     
         public virtual int sp_alterdiagram(string diagramname, Nullable<int> owner_id, Nullable<int> version, byte[] definition)
         {

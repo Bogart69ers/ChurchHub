@@ -14,6 +14,12 @@ namespace ChurchHub.Controllers
     [Authorize(Roles ="Admin")]
     public class AdminController : BaseController
     {
+        private ChurchConnectEntities _dbContext; // Replace YourDbContext with your actual DbContext
+
+        public AdminController()
+        {
+            _dbContext = new ChurchConnectEntities(); // Initialize your DbContext
+        }
         // GET: Admin
         public ActionResult Index()
         {
@@ -71,8 +77,19 @@ namespace ChurchHub.Controllers
         [Authorize]
         public ActionResult AdminDashboard()
         {
-            return View();
+            var reports = _dbContext.vw_Reports.ToList();
+            var viewModel = reports.Select(r => new vw_Reports
+            {
+                intentionName = r.intentionName,
+                TotalAmount = r.TotalAmount,
+                PaymentCount = r.PaymentCount
+            }).ToList();
+
+            ViewBag.Context = _dbContext; // Pass the DbContext instance to the view
+
+            return View(viewModel);
         }
+
         [Authorize]
         public ActionResult AccountManagement()
         {

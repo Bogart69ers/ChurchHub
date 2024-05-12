@@ -51,7 +51,7 @@ namespace ChurchHub.Utils
 
         public override string[] GetRolesForUser(string username)
         {
-            ChurchHubEntities db = new ChurchHubEntities();
+            ChurchConnectEntities db = new ChurchConnectEntities();
             return db.vw_role.Where(m => m.Username == username).Select(m => m.roleName).ToArray();
         }
 

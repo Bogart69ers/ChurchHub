@@ -1,171 +1,118 @@
-﻿
+﻿@model List<ChurchHub.vw_Reports>
+
 @{
     ViewBag.Title = "AdminDashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+    decimal totalAmount = 0;
+    int totalPaymentCount = 0;
+
+    // Iterate through the Model to calculate totals
+    foreach (var report in Model)
+    {
+        // Add the TotalAmount to the totalAmount variable
+        if (report.TotalAmount.HasValue)
+        {
+            totalAmount += report.TotalAmount.Value;
+        }
+
+        // Add the PaymentCount to the totalPaymentCount variable
+        totalPaymentCount += report.PaymentCount ?? 0;
+    }
 }
 
 <div class="content-wrapper">
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="row">
+
+
             <div class="col-lg-4 col-md-4 order-1">
+
                 <div class="row">
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-start justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <img src="../assets/img/icons/unicons/chart-success.png"
-                                             alt="chart success"
-                                             class="rounded" />
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="btn p-0"
-                                                type="button"
-                                                id="cardOpt3"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt3">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="fw-semibold d-block mb-1">Profit</span>
-                                <h3 class="card-title mb-2">$12,628</h3>
-                                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
+    @foreach (var report in Model)
+    {
+        if (report.intentionName == "Souls")
+        {
+            <div class="col-lg-6 col-md-12 col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <div >
+                                <span class="fw-semibold d-block mb-1">@report.intentionName</span>
                             </div>
+
                         </div>
-                    </div>
-                    <div class="col-lg-6 col-md-12 col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-start justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <img src="../assets/img/icons/unicons/wallet-info.png"
-                                             alt="Credit Card"
-                                             class="rounded" />
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="btn p-0"
-                                                type="button"
-                                                id="cardOpt6"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt6">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span>Sales</span>
-                                <h3 class="card-title text-nowrap mb-1">$4,679</h3>
-                                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
-                            </div>
-                        </div>
+                        <h3 class="card-title mb-2">₱@report.TotalAmount</h3>
+                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +72.80%</small>
                     </div>
                 </div>
             </div>
-            <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
-                <div class="row">
-                    <div class="col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-start justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <img src="../assets/img/icons/unicons/paypal.png" alt="Credit Card" class="rounded" />
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="btn p-0"
-                                                type="button"
-                                                id="cardOpt4"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="cardOpt4">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="d-block mb-1">Payments</span>
-                                <h3 class="card-title text-nowrap mb-2">$2,456</h3>
-                                <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+            }
+       
+        else if (report.intentionName == "Thanksgiving")
+        {
+            <div class="col-lg-6 col-md-12 col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <div >
+                                <span class="fw-semibold d-block mb-1">@report.intentionName</span>
+
                             </div>
                         </div>
-                    </div>
-                    <div class="col-6 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title d-flex align-items-start justify-content-between">
-                                    <div class="avatar flex-shrink-0">
-                                        <img src="../assets/img/icons/unicons/cc-primary.png" alt="Credit Card" class="rounded" />
-                                    </div>
-                                    <div class="dropdown">
-                                        <button class="btn p-0"
-                                                type="button"
-                                                id="cardOpt1"
-                                                data-bs-toggle="dropdown"
-                                                aria-haspopup="true"
-                                                aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="cardOpt1">
-                                            <a class="dropdown-item" href="javascript:void(0);">View More</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span class="fw-semibold d-block mb-1">Transactions</span>
-                                <h3 class="card-title mb-2">$14,857</h3>
-                                <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.14%</small>
-                            </div>
-                        </div>
+                        <h3 class="card-title text-nowrap mb-1">₱@report.TotalAmount</h3>
+                        <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> +28.42%</small>
                     </div>
                 </div>
             </div>
+        }
+        else if (report.intentionName == "Healing")
+        {
+            <div class="col-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title d-flex align-items-start justify-content-between">
+                            <div >
+                                <span class="fw-semibold d-block mb-1">@report.intentionName</span>
+
+                            </div>
+                        </div>
+                        <h3 class="card-title text-nowrap mb-2">₱@report.TotalAmount</h3>
+                        <small class="text-danger fw-semibold"><i class="bx bx-down-arrow-alt"></i> -14.82%</small>
+                    </div>
+                </div>
+            </div>
+        }
+
+    }
+     </div>
+   
         </div>
+
         <div class="row">
             <!-- Order Statistics -->
+
+
             <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
                 <div class="card h-100">
                     <div class="card-header d-flex align-items-center justify-content-between pb-0">
                         <div class="card-title mb-0">
-                            <h5 class="m-0 me-2">Order Statistics</h5>
-                            <small class="text-muted">42.82k Total Sales</small>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn p-0"
-                                    type="button"
-                                    id="orederStatistics"
-                                    data-bs-toggle="dropdown"
-                                    aria-haspopup="true"
-                                    aria-expanded="false">
-                                <i class="bx bx-dots-vertical-rounded"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="orederStatistics">
-                                <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                                <a class="dropdown-item" href="javascript:void(0);">Share</a>
-                            </div>
-                        </div>
+                            <h5 class="m-0 me-2">Intention Statistics</h5>
+                            <small class="text-muted">₱@string.Format("{0:N2}", totalAmount) Total Amount</small>
+                        </div>                        
                     </div>
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="d-flex flex-column align-items-center gap-1">
-                                <h2 class="mb-2">8,258</h2>
-                                <span>Total Orders</span>
+                                <h2 class="mb-2">@totalPaymentCount</h2>
+                                <span>Total Intentions</span>
                             </div>
                             <div id="orderStatisticsChart"></div>
                         </div>
+@foreach (var report in Model)
+{
                         <ul class="p-0 m-0">
+                            @if (report.intentionName == "Souls")
+                            {
                             <li class="d-flex mb-4 pb-1">
                                 <div class="avatar flex-shrink-0 me-3">
                                     <span class="avatar-initial rounded bg-label-primary">
@@ -174,62 +121,56 @@
                                 </div>
                                 <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                     <div class="me-2">
-                                        <h6 class="mb-0">Electronic</h6>
-                                        <small class="text-muted">Mobile, Earbuds, TV</small>
+                                        <h6 class="mb-0">@report.intentionName</h6>
+                                        <small class="text-muted">Souls Mass Intention</small>
                                     </div>
                                     <div class="user-progress">
-                                        <small class="fw-semibold">82.5k</small>
+                                        <small class="fw-semibold">@report.PaymentCount</small>
                                     </div>
                                 </div>
                             </li>
-                            <li class="d-flex mb-4 pb-1">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">Fashion</h6>
-                                        <small class="text-muted">T-shirt, Jeans, Shoes</small>
+                            }
+                            else if (report.intentionName == "Thanksgiving")
+                            {
+                                <li class="d-flex mb-4 pb-1">
+                                    <div class="avatar flex-shrink-0 me-3">
+                                        <span class="avatar-initial rounded bg-label-success"><i class="bx bx-closet"></i></span>
                                     </div>
-                                    <div class="user-progress">
-                                        <small class="fw-semibold">23.8k</small>
+                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">@report.intentionName</h6>
+                                            <small class="text-muted">Thanksgiving Intentions</small>
+                                        </div>
+                                        <div class="user-progress">
+                                            <small class="fw-semibold">@report.PaymentCount</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="d-flex mb-4 pb-1">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">Decor</h6>
-                                        <small class="text-muted">Fine Art, Dining</small>
+                                </li>
+                            }
+                            else if (report.intentionName == "Healing")
+                            {
+                                <li class="d-flex mb-4 pb-1">
+                                    <div class="avatar flex-shrink-0 me-3">
+                                        <span class="avatar-initial rounded bg-label-info"><i class="bx bx-home-alt"></i></span>
                                     </div>
-                                    <div class="user-progress">
-                                        <small class="fw-semibold">849k</small>
+                                    <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                                        <div class="me-2">
+                                            <h6 class="mb-0">@report.intentionName</h6>
+                                            <small class="text-muted">Healing Mass Intentions</small>
+                                        </div>
+                                        <div class="user-progress">
+                                            <small class="fw-semibold">@report.PaymentCount</small>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="d-flex">
-                                <div class="avatar flex-shrink-0 me-3">
-                                    <span class="avatar-initial rounded bg-label-secondary">
-                                        <i class="bx bx-football"></i>
-                                    </span>
-                                </div>
-                                <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                    <div class="me-2">
-                                        <h6 class="mb-0">Sports</h6>
-                                        <small class="text-muted">Football, Cricket Kit</small>
-                                    </div>
-                                    <div class="user-progress">
-                                        <small class="fw-semibold">99</small>
-                                    </div>
-                                </div>
-                            </li>
+                                </li>
+                            }
+
                         </ul>
+}
                     </div>
                 </div>
             </div>
+
             <!--/ Order Statistics -->
             <!-- Expense Overview -->
             <div class="col-md-6 col-lg-4 order-2 mb-4">
@@ -348,7 +289,6 @@
                     </div>
                 </div>
             </div>
-            <!--/ Expense Overview -->
-
         </div>
+    </div>
 </div>

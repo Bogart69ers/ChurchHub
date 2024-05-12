@@ -33,6 +33,12 @@ namespace ChurchHub.Utils
         Complete
         
     }
+
+    public enum PaymentStatus
+    {
+        Pending,
+        Paid
+    }
     public class Constant
     {
         public const string Role_Admin = "Admin";

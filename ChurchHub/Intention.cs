@@ -16,13 +16,16 @@ namespace ChurchHub
     {
         public int intentionId { get; set; }
         public string userId { get; set; }
+        public string intentionGUID { get; set; }
         public string offeredBy { get; set; }
         public Nullable<int> intentionType { get; set; }
         public Nullable<System.DateTime> intentionDate { get; set; }
         public string massTime { get; set; }
         public string intentionDetails { get; set; }
         public Nullable<int> intentionStatus { get; set; }
+        public Nullable<int> paymentId { get; set; }
     
         public virtual IntentionCategory IntentionCategory { get; set; }
+        public virtual Payment Payment { get; set; }
     }
 }

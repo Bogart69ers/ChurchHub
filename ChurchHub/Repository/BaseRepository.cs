@@ -20,7 +20,7 @@ namespace ChurchHub.Repository
         // Constructor initializes the database context and DbSet.
         public BaseRepository()
         {
-            _db = new ChurchHubEntities(); // Creating a new instance of the ChurchHubEntities DbContext.
+            _db = new ChurchConnectEntities(); // Creating a new instance of the ChurchHubEntities DbContext.
             _table = _db.Set<T>(); // Setting up DbSet for type T.
         }
 
@@ -98,6 +98,11 @@ namespace ChurchHub.Repository
         { 
             // Returning all entities as a list.
             return _table.ToList(); 
+        }
+
+        public void Save()
+        {
+            _db.SaveChanges();
         }
     }
 }

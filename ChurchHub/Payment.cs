@@ -14,11 +14,19 @@ namespace ChurchHub
     
     public partial class Payment
     {
-        public int PaymentID { get; set; }
-        public Nullable<int> BookingID { get; set; }
-        public string PaymentMethod { get; set; }
-        public Nullable<decimal> Amount { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Payment()
+        {
+            this.Intention = new HashSet<Intention>();
+        }
+    
+        public int paymentId { get; set; }
+        public string Amount { get; set; }
         public Nullable<System.DateTime> PaymentDate { get; set; }
-        public string PaymentStatus { get; set; }
+        public Nullable<int> PaymentStatus { get; set; }
+        public string intentionId { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Intention> Intention { get; set; }
     }
 }

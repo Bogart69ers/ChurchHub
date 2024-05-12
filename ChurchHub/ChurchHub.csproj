@@ -179,6 +179,7 @@
     <Content Include="assets\images\images-261x193.jpg" />
     <Content Include="assets\images\img-3430-1024x768.jpg" />
     <Content Include="assets\images\logo.ico" />
+    <Content Include="assets\images\QR.jpg" />
     <Content Include="assets\images\web-20220103t1035-usa-haiti-mass-1515010-816x544.jpg" />
     <Content Include="assets\img\avatars\1.png" />
     <Content Include="assets\img\avatars\5.png" />
@@ -282,13 +283,6 @@
     <Content Include="scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="scripts\bootstrap.js" />
     <Content Include="scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Model1.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
-    </Content>
     <Content Include="assets\images\hashes.json" />
     <Content Include="assets\web\assets\mobirise-icons2\mobirise2.eot" />
     <Content Include="assets\web\assets\mobirise-icons2\mobirise2.ttf" />
@@ -301,6 +295,13 @@
     <Content Include="assets\vendor\fonts\boxicons\boxicons.ttf" />
     <Content Include="assets\vendor\fonts\boxicons\boxicons.woff" />
     <Content Include="assets\vendor\fonts\boxicons\boxicons.woff2" />
+    <EntityDeploy Include="Model1.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Content>
     <None Include="scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="scripts\jquery-1.10.2.js" />
     <Content Include="scripts\jquery-1.10.2.min.js" />
@@ -324,9 +325,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="IntentionCategory.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="IntentionDetail.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Model1.Context.cs">
@@ -359,6 +357,7 @@
     <Compile Include="Repository\IBaseRepository.cs" />
     <Compile Include="Repository\ImageManager.cs" />
     <Compile Include="Repository\IntentionManager.cs" />
+    <Compile Include="Repository\PaymentManager.cs" />
     <Compile Include="Role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -379,6 +378,9 @@
     </Compile>
     <Compile Include="Utils\MyRole.cs" />
     <Compile Include="Utils\Utilities.cs" />
+    <Compile Include="vw_Reports.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="vw_role.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -410,6 +412,7 @@
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Admin\Intentions.cshtml" />
     <Content Include="Views\Home\MyIntentions.cshtml" />
+    <Content Include="Views\Home\Payment.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -10,14 +10,14 @@ namespace ChurchHub.Repository
     {
         private BaseRepository<User_Account> _userAcc;
         private BaseRepository<User_Information> _userInfo;
-        private ChurchHubEntities _dbContext; // Add this field for DbContext
+        private ChurchConnectEntities _dbContext; // Add this field for DbContext
 
 
         public AccountManager()
         {
             _userAcc = new BaseRepository<User_Account>();
             _userInfo = new BaseRepository<User_Information>();
-            _dbContext = new ChurchHubEntities(); // Initialize DbContext
+            _dbContext = new ChurchConnectEntities(); // Initialize DbContext
 
         }
 
@@ -138,6 +138,8 @@ namespace ChurchHub.Repository
 
             return GetUserByUserId(User.UserId);
         }
+
+
         public User_Information GetUserProfile(int userId)
         {
             // Assuming dbContext is your Entity Framework DbContext

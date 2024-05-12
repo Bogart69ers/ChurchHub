@@ -10,16 +10,18 @@ namespace ChurchHub.Repository
 {
     public class IntentionManager
     {
-        ChurchHubEntities _db;
+        ChurchConnectEntities _db;
         BaseRepository<Intention> _intention; 
         AccountManager _accMgr;
+        BaseRepository<Payment> _payment;
 
         // Constructor initializing necessary dependencies.
         public IntentionManager()
         {
-            _db = new ChurchHubEntities(); // Initializing dbContext.
+            _db = new ChurchConnectEntities(); // Initializing dbContext.
             _intention = new BaseRepository<Intention>(); // Initializing repository for Intention entity.
             _accMgr = new AccountManager(); // Initializing AccountManager for user-related operations.
+            _payment = new BaseRepository<Payment>();
         }
 
         // Method Retrieve list of Intentions by userId.
@@ -32,6 +34,11 @@ namespace ChurchHub.Repository
         public Intention GetIntentionByUserId(string userId)
         {
             return _intention._table.Where(m => m.userId == userId).FirstOrDefault();
+        }
+
+        public Intention GetIntentionByGuid(string intentionGUId)
+        {
+            return _intention._table.Where(m => m.intentionGUID == intentionGUId).FirstOrDefault();
         }
 
         // Update an Intention and return ErrorCode.
@@ -47,6 +54,7 @@ namespace ChurchHub.Repository
             var user = _accMgr.GetUserInfoByUsername(username);
 
             // Assign userId and set intentionStatus to Pending.
+            intent.intentionGUID = Utilities.gUid;
             intent.userId = user.userId;
             intent.intentionStatus = (int)IntentionStatus.Pending;
 
@@ -57,6 +65,12 @@ namespace ChurchHub.Repository
             }
 
             return ErrorCode.Success;
+        }
+
+        public Intention GetIntentionByUsername(String username)
+        {
+            var user = _accMgr.GetUserByUsername(username);
+            return _intention._table.Where(m => m.intentionGUID == user.UserId).FirstOrDefault();
         }
 
         // Method Retrieve an Intention by its id.
@@ -73,5 +87,7 @@ namespace ChurchHub.Repository
             // Retrieve Intention based on user's userId.
             return GetIntentionByUserId(intention.userId);
         }
+
+
     }
 }
