@@ -32,7 +32,6 @@ namespace ChurchHub
         public virtual DbSet<IntentionCategory> IntentionCategory { get; set; }
         public virtual DbSet<Payment> Payment { get; set; }
         public virtual DbSet<Role> Role { get; set; }
-        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<User_Account> User_Account { get; set; }
         public virtual DbSet<User_Information> User_Information { get; set; }
         public virtual DbSet<vw_Reports> vw_Reports { get; set; }

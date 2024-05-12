@@ -10,11 +10,10 @@
         <EntityTypeShape EntityType="ChurchConnectModel.IntentionCategory" Width="1.5" PointX="5.75" PointY="1.875" />
         <EntityTypeShape EntityType="ChurchConnectModel.Payment" Width="1.5" PointX="5.75" PointY="5.625" />
         <EntityTypeShape EntityType="ChurchConnectModel.Role" Width="1.5" PointX="0.75" PointY="2.125" />
-        <EntityTypeShape EntityType="ChurchConnectModel.sysdiagrams" Width="1.5" PointX="0.75" PointY="5.75" />
         <EntityTypeShape EntityType="ChurchConnectModel.User_Account" Width="1.5" PointX="3" PointY="1" />
         <EntityTypeShape EntityType="ChurchConnectModel.User_Information" Width="1.5" PointX="7.75" PointY="6" />
-        <EntityTypeShape EntityType="ChurchConnectModel.vw_Reports" Width="1.5" PointX="2.75" PointY="5.75" />
-        <EntityTypeShape EntityType="ChurchConnectModel.vw_role" Width="1.5" PointX="0.75" PointY="8.75" />
+        <EntityTypeShape EntityType="ChurchConnectModel.vw_Reports" Width="1.5" PointX="0.75" PointY="5.75" />
+        <EntityTypeShape EntityType="ChurchConnectModel.vw_role" Width="1.5" PointX="2.75" PointY="5.75" />
         <AssociationConnector Association="ChurchConnectModel.FK_Image_User_Information" />
         <AssociationConnector Association="ChurchConnectModel.FK_Intention_IntentionCategory" />
         <AssociationConnector Association="ChurchConnectModel.FK_Intention_Payment" />
